@@ -1,0 +1,13 @@
+<svg width="150" height="173" viewBox="0 0 150 173" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="149.273" height="173" rx="8" fill="#1D2E56"/>
+  <path d="M105.054 62.6745C105.054 62.6745 91.5355 82.9523 74.6374 82.9523C57.7392 82.9523 44.2207 62.6745 44.2207 62.6745C44.2207 62.6745 57.7392 42.3967 74.6374 42.3967C91.5355 42.3967 105.054 62.6745 105.054 62.6745Z" stroke="#89A0D7" stroke-width="4.5625" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M74.6365 66.0537C76.503 66.0537 78.0161 64.5406 78.0161 62.6741C78.0161 60.8075 76.503 59.2944 74.6365 59.2944C72.7699 59.2944 71.2568 60.8075 71.2568 62.6741C71.2568 64.5406 72.7699 66.0537 74.6365 66.0537Z" fill="#89A0D7" stroke="#89A0D7" stroke-width="3.04167" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Updated text below the eye image with new font family and larger size -->
+  <text x="50%" y="120" fill="#89A0D7" font-size="19" font-family="Arial, Helvetica Neue, Helvetica, sans-serif" text-anchor="middle">
+    Get the
+  </text>
+  <text x="50%" y="140" fill="#89A0D7" font-size="19" font-family="Arial, Helvetica Neue, Helvetica, sans-serif" text-anchor="middle">
+    results
+  </text>
+</svg>

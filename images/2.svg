@@ -1,0 +1,13 @@
+<svg width="146" height="166" viewBox="0 0 146 166" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="145.273" height="165.579" rx="8" fill="white"/>
+  <path d="M66.8066 79.0451V58.6416C66.8066 57.3532 67.3185 56.1176 68.2295 55.2066C69.1405 54.2955 70.3762 53.7837 71.6646 53.7837V53.7837C72.953 53.7837 74.1886 54.2955 75.0997 55.2066C76.0107 56.1176 76.5226 57.3532 76.5226 58.6416V69.3291H84.2953C86.3567 69.3291 88.3338 70.1481 89.7914 71.6057C91.2491 73.0634 92.068 75.0404 92.068 77.1019V79.0451" stroke="#4D7AE3" stroke-width="3.40057" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M58.6066 60.0429C56.0263 57.4607 54.2695 54.1714 53.5583 50.5908C52.8471 47.0102 53.2135 43.2992 54.6111 39.9268C56.0087 36.5545 58.3748 33.6722 61.4103 31.6443C64.4458 29.6165 68.0143 28.5342 71.6648 28.5342C75.3153 28.5342 78.8839 29.6165 81.9194 31.6443C84.9548 33.6722 87.3209 36.5545 88.7185 39.9268C90.1162 43.2992 90.4825 47.0102 89.7713 50.5908C89.0602 54.1714 87.3033 57.4607 84.723 60.0429" stroke="#4D7AE3" stroke-width="3.40057" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Added text below the icon -->
+  <text x="50%" y="120" fill="#4D7AE3" font-size="19" font-family="Arial, Helvetica Neue, Helvetica, sans-serif" text-anchor="middle">
+    Identify your
+  </text>
+  <text x="50%" y="140" fill="#4D7AE3" font-size="19" font-family="Arial, Helvetica Neue, Helvetica, sans-serif" text-anchor="middle">
+    voters
+  </text>
+</svg>

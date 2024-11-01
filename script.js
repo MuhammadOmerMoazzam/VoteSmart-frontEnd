@@ -21,6 +21,6 @@ let currentIndex = 0;
     overlayGroups[0].classList.add('active');
 
     // Change image and overlay every 3 seconds
-    setInterval(showNextImage, 2500);
+    setInterval(showNextImage, 3000);
 
 

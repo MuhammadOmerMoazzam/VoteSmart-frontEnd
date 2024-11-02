@@ -562,3 +562,111 @@ p {
   transform: translateX(-50%);
   border-radius: 2px;
 }
+
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  header nav {
+    flex-direction: column; /* Stack navbar items vertically */
+    padding-left: 1rem; /* Adjust padding */
+    padding-right: 1rem; /* Adjust padding */
+  }
+
+  .center ul {
+    flex-direction: column; /* Stack links vertically */
+    gap: 15px; /* Reduce gap */
+  }
+
+  .right-section {
+    width: 100%; /* Full width */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  .carousel {
+    width: 100%; /* Full width for carousel */
+  }
+
+  .advantages-cards {
+    flex-direction: column; /* Stack cards vertically */
+    gap: 20px; /* Reduce gap */
+  }
+
+  .info-card {
+    width: calc(100% - 20px); /* One card per row */
+  }
+
+  .know-more-section {
+    padding: 40px 20px; /* Reduce horizontal padding */
+  }
+}
+
+/* Tablet Styles */
+@media (max-width: 768px) {
+  header nav {
+    padding-left: 2rem; /* Adjust padding */
+    padding-right: 2rem; /* Adjust padding */
+  }
+
+  .center ul {
+    flex-direction: column; /* Stack links vertically */
+    gap: 20px; /* Reduce gap */
+  }
+
+  .right-section {
+    width: 100%; /* Full width */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  .carousel {
+    width: 100%; /* Full width for carousel */
+  }
+
+  .advantages-cards {
+    flex-direction: column; /* Stack cards vertically */
+    gap: 20px; /* Reduce gap */
+  }
+
+  .info-card {
+    width: calc(50% - 20px); /* Two cards per row */
+  }
+
+  .know-more-section {
+    padding: 40px 20px; /* Reduce horizontal padding */
+  }
+}
+
+/* Large Screens */
+@media (min-width: 769px) {
+  header nav {
+    padding-left: 7.5rem; /* Original padding */
+    padding-right: 7.5rem; /* Original padding */
+  }
+
+  .right-section {
+    width: 450px; /* Original width */
+    margin-left: 250px; /* Original margin */
+  }
+
+  .carousel {
+    width: 500px; /* Original width for carousel */
+  }
+
+  .advantages-cards {
+    gap: 124px; /* Original gap */
+  }
+
+  .info-card {
+    width: calc(33.33% - 20px); /* Three cards per row */
+  }
+
+  .know-more-section {
+    padding: 40px 460px; /* Original padding */
+  }
+}
+
+/* Extra Large Screens */
+@media (min-width: 1200px) {
+  .know-more-section {
+    padding: 40px 500px; /* Adjust padding for very large screens */
+  }
+}

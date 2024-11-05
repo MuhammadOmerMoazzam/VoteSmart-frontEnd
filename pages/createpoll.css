@@ -7,7 +7,8 @@ body {
     display: flex;               
     justify-content: center;     
     align-items: center;         
-    height: 100vh;              
+    height: 100vh;
+    padding: 550px 0;           
 }
 
 .container {
@@ -89,3 +90,129 @@ button:hover {
 .remove-btn:hover {
     background-color: #ff1c1c;
 }
+/* Navbar container styling */
+header nav {
+    z-index: 990;
+    background-color: #fff;
+    border-bottom: 1px solid #d1d1d1;
+    justify-content: space-around;
+    align-items: center;
+    max-width: none;
+    height: 72px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 7.5rem;
+    padding-right: 7.5rem;
+    display: flex;
+    position: fixed;
+    inset: 0% 0% auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .underlinedText {
+    text-decoration: underline;
+    }
+    
+    /* Logo styling */
+    .left img {
+    cursor: pointer;
+    height: 60px;
+    }
+    /* Centered navbar links with space between items */
+    .center ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 30px; /* Space between links */
+    }
+    
+    /* Styling for each navbar item */
+    .center ul li {
+    display: inline-block;
+    }
+    
+    /* Link styling within the nav items */
+    .center ul li a {
+    text-decoration: none;
+    color: #1d2e56; /* Text color */
+    font-size: 16px;
+    padding: 8px 12px;
+    transition: color 0.3s ease; /* Smooth color transition */
+    font-weight: bold; /* Make text slightly bold for visibility */
+    position: relative; /* Positioning for pseudo-element */
+    }
+    
+    /* Underline effect using a pseudo-element */
+    .center ul li a::after {
+    content: ''; /* Pseudo-element for underline */
+    position: absolute; /* Positioning relative to the link */
+    left: 50%; /* Start in the middle */
+    bottom: -4px; /* Position just below the text */
+    width: 0; /* Initial width */
+    height: 2px; /* Height of the underline */
+    background: #243f76; /* Color of the underline */
+    transition: width 0.4s ease, left 0.4s ease; /* Smooth transition for width and position */
+    }
+    
+    /* Link hover effect with underline animation */
+    .center ul li a:hover {
+    color: #243f76; /* Change text color on hover */
+    }
+    
+    /* Hover effect for the underline */
+    .center ul li a:hover::after {
+    width: 100%; /* Full width on hover */
+    left: 0; /* Position to the left */
+    }
+    
+    /* Right section button styling */
+    .right .navbuts {
+    background-color: #1d2e56; /* Button background color */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    /* Button hover effect with animation */
+    .right .navbuts:hover {
+    background-color: #243f76; /* Slightly lighter shade on hover */
+    transform: scale(1.05); /* Slight zoom on hover */
+    }
+    .navbuts {
+    position: relative; /* Positioning for pseudo-element */
+    overflow: hidden; /* Prevent overflow of the shine effect */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for button */
+    font-size: 16px; /* Font size */
+    color: white; /* Text color */
+    background-color: #007BFF; /* Background color */
+    cursor: pointer; /* Pointer cursor on hover */
+    }
+    
+    /* Shine effect */
+    .navbuts::before {
+    content: ''; /* Pseudo-element for shine effect */
+    position: absolute; /* Positioning relative to the button */
+    top: -20%; /* Start above the button */
+    left: -20%; /* Start from the left side */
+    width: 140%; /* Extend to cover the button */
+    height: 140%; /* Extend to cover the button */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%); /* Shine gradient */
+    transform: translateX(-100%) rotate(30deg); /* Initial position and rotation */
+    transition: transform 0.5s ease; /* Smooth transition for shine */
+    pointer-events: none; /* Prevents interaction with the shine effect */
+    }
+    
+    .navbuts:hover::before {
+    transform: translateX(100%) rotate(30deg); /* Moves the shine across the button */
+    }
+  
+  
+  
+  

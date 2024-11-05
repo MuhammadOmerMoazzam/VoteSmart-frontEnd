@@ -805,3 +805,27 @@ p {
 .advantage-card:hover {
   transform: translateY(-2px); /* Slight lift for interaction */
 }
+/* Scroll-to-top button styling */
+#scrollTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background: linear-gradient(135deg, #007bff, #00d2ff); /* Gradient background */
+  color: white;
+  cursor: pointer;
+  padding: 15px 20px;
+  border-radius: 50px; /* Rounded edges */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+#scrollTopBtn:hover {
+  background: linear-gradient(135deg, #00d2ff, #007bff); /* Reverse gradient on hover */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
+  transform: translateY(-3px); /* Lift effect on hover */
+}

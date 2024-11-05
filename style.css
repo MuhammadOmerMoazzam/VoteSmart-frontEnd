@@ -35,7 +35,6 @@ header nav {
   cursor: pointer;
   height: 60px;
 }
-
 /* Centered navbar links with space between items */
 .center ul {
   display: flex;
@@ -53,18 +52,35 @@ header nav {
 /* Link styling within the nav items */
 .center ul li a {
   text-decoration: none;
-  color: #1d2e56; /* Text color similar to button background */
+  color: #1d2e56; /* Text color */
   font-size: 16px;
   padding: 8px 12px;
-  transition: color 0.3s ease, transform 0.3s ease;
-  font-weight: 00; /* Slightly bold for visibility */
+  transition: color 0.3s ease; /* Smooth color transition */
+  font-weight: bold; /* Make text slightly bold for visibility */
+  position: relative; /* Positioning for pseudo-element */
 }
 
-/* Link hover effect with subtle animation */
+/* Underline effect using a pseudo-element */
+.center ul li a::after {
+  content: ''; /* Pseudo-element for underline */
+  position: absolute; /* Positioning relative to the link */
+  left: 50%; /* Start in the middle */
+  bottom: -4px; /* Position just below the text */
+  width: 0; /* Initial width */
+  height: 2px; /* Height of the underline */
+  background: #243f76; /* Color of the underline */
+  transition: width 0.4s ease, left 0.4s ease; /* Smooth transition for width and position */
+}
+
+/* Link hover effect with underline animation */
 .center ul li a:hover {
-  color: #243f76; /* Slightly lighter shade on hover */
-  transform: scale(1.05); /* Slight zoom on hover */
-  border-bottom: 2px solid #243f76; /* Adds an underline on hover */
+  color: #243f76; /* Change text color on hover */
+}
+
+/* Hover effect for the underline */
+.center ul li a:hover::after {
+  width: 100%; /* Full width on hover */
+  left: 0; /* Position to the left */
 }
 
 /* Right section button styling */
@@ -669,4 +685,123 @@ p {
   .know-more-section {
     padding: 40px 500px; /* Adjust padding for very large screens */
   }
+}
+
+.info-card {
+  position: relative; /* Needed for the pseudo-element positioning */
+  overflow: hidden; /* Prevent overflow of the shine effect */
+  transition: transform 0.3s ease; /* Smooth transition for scale */
+  border: 1px solid #ddd; /* Optional: add a border for better visibility */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.info-card:hover {
+  transform: scale(1.02); /* Slightly enlarges the card */
+}
+
+/* Shine effect */
+.info-card::before {
+  content: ''; /* Pseudo-element for shine effect */
+  position: absolute; /* Positioning relative to the card */
+  top: -20%; /* Start above the card */
+  left: -20%; /* Start from the left side */
+  width: 140%; /* Extend to cover the card */
+  height: 140%; /* Extend to cover the card */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%); /* Shine gradient */
+  transform: translateX(-100%) rotate(30deg); /* Initial position and rotation */
+  transition: transform 0.5s ease; /* Smooth transition for shine */
+  pointer-events: none; /* Prevents interaction with the shine effect */
+}
+
+.info-card:hover::before {
+  transform: translateX(100%) rotate(30deg); /* Moves the shine across the card */
+}
+
+/* Image and text styles */
+.image img {
+  width: 100%; /* Ensure the image covers the entire width */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Prevents space below the image */
+}
+
+.textpart {
+  padding: 15px; /* Adds padding for text */
+}
+
+.info-title {
+  font-size: 1.5em; /* Adjust title size */
+  margin-bottom: 10px; /* Space below title */
+}
+
+.info-description {
+  margin-bottom: 10px; /* Space below description */
+}
+
+.more-info {
+  color: #007BFF; /* Customize link color */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s; /* Smooth transition for link color */
+}
+
+.more-info:hover {
+  color: #0056b3; /* Change link color on hover */
+}
+.navbuts {
+  position: relative; /* Positioning for pseudo-element */
+  overflow: hidden; /* Prevent overflow of the shine effect */
+  border: none; /* Remove default border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 20px; /* Padding for button */
+  font-size: 16px; /* Font size */
+  color: white; /* Text color */
+  background-color: #007BFF; /* Background color */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Shine effect */
+.navbuts::before {
+  content: ''; /* Pseudo-element for shine effect */
+  position: absolute; /* Positioning relative to the button */
+  top: -20%; /* Start above the button */
+  left: -20%; /* Start from the left side */
+  width: 140%; /* Extend to cover the button */
+  height: 140%; /* Extend to cover the button */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%); /* Shine gradient */
+  transform: translateX(-100%) rotate(30deg); /* Initial position and rotation */
+  transition: transform 0.5s ease; /* Smooth transition for shine */
+  pointer-events: none; /* Prevents interaction with the shine effect */
+}
+
+.navbuts:hover::before {
+  transform: translateX(100%) rotate(30deg); /* Moves the shine across the button */
+}
+
+/* Shine effect on advantage cards */
+.advantage-card {
+  position: relative; /* Needed for positioning the shine effect */
+  overflow: hidden; /* Hide the overflow to ensure the shine effect is contained */
+  transition: transform 0.3s ease; /* Smooth transform transition */
+}
+
+/* Create a lighter blue shine effect with a pseudo-element */
+.advantage-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; /* Position the shine above the card */
+  left: -50%; /* Position the shine to the left of the card */
+  width: 200%; /* Make it wider than the card */
+  height: 200%; /* Make it taller than the card */
+  background: linear-gradient(60deg, rgba(163, 196, 243, 0.6) 0%, rgba(255, 255, 255, 0) 100%); /* Lighter blue shine effect */
+  transform: translateX(-100%); /* Start off-screen to the left */
+  transition: transform 0.5s ease; /* Smooth transition for shine */
+}
+
+/* Hover effect */
+.advantage-card:hover::before {
+  transform: translateX(100%); /* Move shine effect across the card */
+}
+
+/* Slight lift effect on hover */
+.advantage-card:hover {
+  transform: translateY(-2px); /* Slight lift for interaction */
 }

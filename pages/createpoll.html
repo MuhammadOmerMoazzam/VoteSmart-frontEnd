@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Poll</title>
+    <link rel="stylesheet" href="createpoll.css">
+    <script src="../script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Create a Poll</h1>
+        <form id="pollForm">
+            <div class="form-group">
+                <label for="title">Poll Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pollType">Poll Type:</label>
+                <select id="pollType" name="pollType">
+                    <option value="educational">Educational Poll</option>
+                    <option value="professional">Professional Poll</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="securityOption">Security Option:</label>
+                <select id="securityOption" name="securityOption">
+                    <option value="one_vote_per_session">One Vote per Session</option>
+                    <option value="one_vote_per_account">One Vote per Account</option>
+                </select>
+            </div>
+            <div id="candidatesSection">
+                <h3>Candidate Information</h3>
+                <div class="candidate-info">
+                    <div class="form-group">
+                        <label for="candidateName">Name:</label>
+                        <input type="text" name="candidateName[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidateAge">Age:</label>
+                        <input type="number" name="candidateAge[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidateDescription">Description:</label>
+                        <textarea name="candidateDescription[]" rows="2" required></textarea>
+                    </div>
+                    <button type="button" class="remove-btn">Remove</button>
+                </div>
+            </div>
+            <button type="button" id="addOptionBtn">Add More Options</button>
+            <div class="form-group">
+                <button type="submit">Create Poll</button>
+            </div>
+        </form>
+    </div>
+    
+</body>
+</html>

@@ -18,8 +18,8 @@ header nav {
   height: 72px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 7.5rem;
-  padding-right: 7.5rem;
+  padding-left: 12.5rem;
+  padding-right: 10.5rem;
   display: flex;
   position: fixed;
   inset: 0% 0% auto;
@@ -53,7 +53,7 @@ header nav {
 .center ul li a {
   text-decoration: none;
   color: #1d2e56; /* Text color */
-  font-size: 16px;
+  font-size: 18px;
   padding: 8px 12px;
   transition: color 0.3s ease; /* Smooth color transition */
   font-weight: bold; /* Make text slightly bold for visibility */
@@ -651,41 +651,6 @@ p {
   }
 }
 
-/* Large Screens */
-@media (min-width: 769px) {
-  header nav {
-    padding-left: 7.5rem; /* Original padding */
-    padding-right: 7.5rem; /* Original padding */
-  }
-
-  .right-section {
-    width: 450px; /* Original width */
-    margin-left: 250px; /* Original margin */
-  }
-
-  .carousel {
-    width: 500px; /* Original width for carousel */
-  }
-
-  .advantages-cards {
-    gap: 124px; /* Original gap */
-  }
-
-  .info-card {
-    width: calc(33.33% - 20px); /* Three cards per row */
-  }
-
-  .know-more-section {
-    padding: 40px 460px; /* Original padding */
-  }
-}
-
-/* Extra Large Screens */
-@media (min-width: 1200px) {
-  .know-more-section {
-    padding: 40px 500px; /* Adjust padding for very large screens */
-  }
-}
 
 .info-card {
   position: relative; /* Needed for the pseudo-element positioning */

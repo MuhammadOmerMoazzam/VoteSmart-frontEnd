@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Check for the path and execute corresponding script
     const path = window.location.pathname;
 
-    if (path.endsWith('/pages/createpoll.html')) {
-        // Code specific to createpoll.html
+    function setupCreatePoll() {
         document.getElementById("addOptionBtn").addEventListener("click", function() {
-            var candidateSection = document.getElementById("candidatesSection");
-            var candidateInfo = document.createElement("div");
+            const candidateSection = document.getElementById("candidatesSection");
+            const candidateInfo = document.createElement("div");
             candidateInfo.className = "candidate-info";
 
             candidateInfo.innerHTML = `
@@ -27,17 +25,36 @@ document.addEventListener("DOMContentLoaded", function() {
 
             candidateSection.appendChild(candidateInfo);
 
-            var removeButtons = document.querySelectorAll(".remove-btn");
-            removeButtons.forEach(function(button) {
+            document.querySelectorAll(".remove-btn").forEach(button => {
                 button.addEventListener("click", function() {
                     button.parentElement.remove();
                 });
             });
         });
+        document.getElementById('pollForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission to check conditions first
+        
+            const candidateCount = document.querySelectorAll('input[name="candidateName[]"]').length;
+            const participantCount = parseInt(document.getElementById('participantCount').value);
+        
+            // Check if there are more than 2 candidates
+            if (candidateCount > 2) {
+                window.location.href = '/pages/pricing.html'; // Redirect to pricing page
+                return;
+            }
+        
+            // Check if more than 20 participants are entered
+            if (participantCount > 20) {
+                window.location.href = '/pages/pricing.html'; // Redirect to pricing page
+                return;
+            }
+        
+            // If all checks pass, submit the form
+            this.submit();
+        });
     }
 
-    if (path.endsWith('/index.html')) {
-        // Code specific to index.html
+    function setupIndex() {
         let currentIndex = 0;
         const images = document.querySelectorAll('.carousel-image');
         const overlayGroups = document.querySelectorAll('.overlay-group');
@@ -57,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function() {
         overlayGroups[0].classList.add('active');
         setInterval(showNextImage, 3000);
 
-        // Show button when user scrolls down
         window.onscroll = function() {
             const scrollTopBtn = document.getElementById("scrollTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -67,9 +83,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         };
 
-        // Smooth scroll-to-top function
         document.getElementById("scrollTopBtn").addEventListener("click", function() {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+    }
+
+    if (path.endsWith('/pages/createpoll.html')) {
+        setupCreatePoll();
+    }
+
+    if (path === '/' || path.endsWith('/index.html')) {
+        setupIndex();
     }
 });

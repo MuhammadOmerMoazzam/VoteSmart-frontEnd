@@ -13,7 +13,7 @@
         <nav>
           <div class="left">
             <img
-              onclick="location.href='/'"
+              onclick="location.href='/index.html'"
               src="/images/VoteSmart-logo.png"
               alt="VoteSmart-logo"
             />
@@ -23,15 +23,36 @@
               <li><a href="pages/createpoll.html">Services</a></li>
               <li><a href="/pages/aboutus.html">About Us</a></li>
               <li><a href="pages/contactus.html">Contact Us</a></li>
-              <li><a href="/pages/pricing.html">Prices</a></li>
             </ul>
           </div>
           <div class="right">
-            <button onclick="location.href='/pages/loginandsignup.html?form=signup'" class="navbuts">Sign Up</button>
-            <button onclick="location.href='/pages/loginandsignup.html?form=signin'" class="navbuts">Sign In</button>
+            <div id="auth-buttons">
+              <button
+                onclick="location.href='/pages/loginandsignup.html?form=signup'"
+                class="navbuts"
+                id="signupBtn"
+              >
+                Sign Up
+              </button>
+              <button
+                onclick="location.href='/pages/loginandsignup.html?form=signin'"
+                class="navbuts"
+                id="signinBtn"
+              >
+                Sign In
+              </button>
+            </div>
+            <div id="profileIcon" class="hidden">
+              <img
+                src="/images/profile.png"
+                alt="Profile"
+                class="profile-circle"
+                onclick="redirectToProfile()"
+              />
+            </div>
           </div>
         </nav>
-    </header>
+      </header>
 
     <div class="container">
         <h1>Create a Poll</h1>
@@ -58,11 +79,7 @@
                     <option value="one_vote_per_account">One Vote per Account</option>
                 </select>
             </div>
-            <!-- Added field for number of participants -->
-            <div class="form-group">
-                <label for="participantCount">How many people will participate in this poll?</label>
-                <input type="number" id="participantCount" name="participantCount" required>
-            </div>
+           
             <div id="candidatesSection">
                 <h3>Candidate Information</h3>
                 <div class="candidate-info">

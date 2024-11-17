@@ -13,22 +13,43 @@
         <nav>
           <div class="left">
             <img
-              onclick="location.href='/'"
+              onclick="location.href='/index.html'"
               src="/images/VoteSmart-logo.png"
               alt="VoteSmart-logo"
             />
           </div>
           <div class="center">
             <ul>
-              <li><a href="#services">Services</a></li>
+              <li><a href="pages/createpoll.html">Services</a></li>
               <li><a href="/pages/aboutus.html">About Us</a></li>
               <li><a href="pages/contactus.html">Contact Us</a></li>
-              <li><a href="/pages/pricing.html">Prices</a></li>
             </ul>
           </div>
           <div class="right">
-            <button onclick="location.href='/pages/loginandsignup.html?form=signup'" class="navbuts">Sign Up</button>
-            <button onclick="location.href='/pages/loginandsignup.html?form=signin'" class="navbuts">Sign In</button>
+            <div id="auth-buttons">
+              <button
+                onclick="location.href='/pages/loginandsignup.html?form=signup'"
+                class="navbuts"
+                id="signupBtn"
+              >
+                Sign Up
+              </button>
+              <button
+                onclick="location.href='/pages/loginandsignup.html?form=signin'"
+                class="navbuts"
+                id="signinBtn"
+              >
+                Sign In
+              </button>
+            </div>
+            <div id="profileIcon" class="hidden">
+              <img
+                src="/images/profile.png"
+                alt="Profile"
+                class="profile-circle"
+                onclick="redirectToProfile()"
+              />
+            </div>
           </div>
         </nav>
       </header>
@@ -100,5 +121,46 @@
             </div>
           </div>
     </main>
+    <script>
+            // Check if the user is authenticated
+    function checkAuthStatus() {
+      fetch("http://localhost:8080/api/auth/status", {
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const authButtons = document.getElementById("auth-buttons");
+          const profileIcon = document.getElementById("profileIcon");
+          const userId = data.userId;
+          console.log(data);
+
+          if (data.authenticated) {
+            // Hide login/signup buttons and show profile icon
+            authButtons.style.display = "none";
+            profileIcon.style.display = "block";
+            // Optionally, you can store the userId in a global variable or localStorage if needed
+            localStorage.setItem("userId", userId);
+          } else {
+            // Show login/signup buttons and hide profile icon
+            authButtons.style.display = "block";
+            profileIcon.style.display = "none";
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking authentication status:", error);
+        });
+    }
+
+    // Call the function when the page loads
+    window.onload = checkAuthStatus;
+
+    // Redirect to the user's profile page when the profile icon is clicked
+    function redirectToProfile() {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
+      }
+    }
+    </script>
 </body>
 </html>

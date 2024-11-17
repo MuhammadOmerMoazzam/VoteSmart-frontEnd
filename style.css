@@ -794,3 +794,15 @@ p {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
   transform: translateY(-3px); /* Lift effect on hover */
 }
+
+.profile-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ddd;
+}
+
+.hidden {
+  display: none;
+}

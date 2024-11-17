@@ -1,53 +1,51 @@
 <!DOCTYPE html>
-<!-- Website - www.codingnepalweb.com -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content=" Today in this blog you will learn how to create a responsive Login & Registration Form in HTML CSS & JavaScript. The blog will cover everything from the basics of creating a Login & Registration in HTML, to styling it with CSS and adding with JavaScript." />
-    <meta
-      name="keywords"
-      content=" 
- Animated Login & Registration Form,Form Design,HTML and CSS,HTML CSS JavaScript,login & registration form,login & signup form,Login Form Design,registration form,Signup Form,HTML,CSS,JavaScript,
-"
-    />
-
+    <meta name="description" content="Signup and Login Form with JavaScript" />
+    <meta name="keywords" content="Signup, Login, HTML, CSS, JavaScript" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Signup/SignIn</title>
-    <link rel="icon" href="/icon.ico" type="image/x-icon">
+    <link rel="icon" href="/icon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="loginandsignup.css" />
-    <script src="/script.js" defer></script>
   </head>
   <body>
     <section class="wrapper">
       <div class="form signup">
         <header>Sign Up</header>
-        <form action="#">
-          <input type="text" placeholder="Full name" required />
-          <input type="text" placeholder="Email address" required />
-          <input type="password" placeholder="Password" required />
+        <form id="signupForm">
+          <input type="text" id="name" placeholder="Full name" required />
+          <input type="email" id="email" placeholder="Email address" required />
+          <input type="password" id="password" placeholder="Password" required />
           <div class="checkbox">
             <input type="checkbox" id="signupCheck" />
             <label for="signupCheck">I accept all terms & conditions</label>
           </div>
           <input type="submit" value="Signup" />
+          <div id="signupMessage"></div>
         </form>
       </div>
 
       <div class="form login">
         <header>Sign In</header>
-        <form action="#">
-          <input type="text" placeholder="Email address" required />
-          <input type="password" placeholder="Password" required />
+        <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email address" required />
+          <input type="password" id="loginPassword" placeholder="Password" required />
           <a href="#">Forgot password?</a>
           <input type="submit" value="Login" />
+          <div id="loginMessage"></div>
         </form>
       </div>
+    </section>
 
-      <script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
         const wrapper = document.querySelector(".wrapper"),
           signupHeader = document.querySelector(".signup header"),
           loginHeader = document.querySelector(".login header");
+
+        const signupForm = document.querySelector(".signup form");
+        const loginForm = document.querySelector(".login form");
 
         // Function to handle form toggle based on URL parameter
         function toggleForm() {
@@ -69,12 +67,102 @@
           wrapper.classList.add("active");
           window.history.replaceState(null, null, "?form=signin"); // Update URL to signin
         });
+
         signupHeader.addEventListener("click", () => {
           wrapper.classList.remove("active");
           window.history.replaceState(null, null, "?form=signup"); // Update URL to signup
         });
-      </script>
-      
-    </section>
+
+        // Signup
+        signupForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const signupMessage = document.getElementById("signupMessage");
+
+  try {
+    // Make the request to the backend
+    const response = await fetch('http://localhost:8080/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Ensure content-type is set to application/json
+      },
+      body: JSON.stringify({ name, email, password }),
+      credentials: 'include', // Include cookies/session if needed
+    });
+
+    if (response.ok) {
+      signupMessage.textContent = "Successfully signed up!";
+      signupMessage.style.color = "green"; // Success message styling
+      setTimeout(() => {
+        window.location.href = "loginandsignup.html?form=signin"; // Redirect to login
+      }, 2000);
+    } else {
+      // Handle non-2xx responses
+      let errorMessage = "Signup failed!";
+      try {
+        const result = await response.json(); // Try parsing JSON if available
+        errorMessage += " " + result.message;
+      } catch {
+        errorMessage += " Server error or invalid response.";
+      }
+      signupMessage.textContent = errorMessage;
+      signupMessage.style.color = "red"; // Error message styling
+    }
+  } catch (error) {
+    // Handle network errors or unreachable server
+    signupMessage.textContent = "Error connecting to the server: " + error.message;
+    signupMessage.style.color = "red"; // Error message styling
+  }
+});
+
+        loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  const loginMessage = document.getElementById("loginMessage");
+
+  try {
+    // Make the request to the backend
+    const response = await fetch('http://localhost:8080/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include',
+    });
+
+    if (response.ok) {
+      loginMessage.textContent = "Login successful!";
+      loginMessage.style.color = "green";
+      setTimeout(() => {
+        // Redirect to root-level index.html
+        window.location.href = "http://127.0.0.1:3000/index.html";
+      }, 2000);
+    } else {
+      // Handle non-2xx responses
+      let errorMessage = "Login failed!";
+      try {
+        const result = await response.json(); // Try parsing JSON if available
+        errorMessage += " " + result.message;
+      } catch {
+        errorMessage += " Server error or invalid response.";
+      }
+      loginMessage.textContent = errorMessage;
+      loginMessage.style.color = "red";
+    }
+  } catch (error) {
+    // Handle network errors or unreachable server
+    loginMessage.textContent = "Error connecting to the server: " + error.message;
+    loginMessage.style.color = "red";
+  }
+});
+
+      });
+    </script>
   </body>
 </html>

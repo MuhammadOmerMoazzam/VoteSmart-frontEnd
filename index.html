@@ -27,12 +27,33 @@
             <li><a href="pages/createpoll.html">Services</a></li>
             <li><a href="/pages/aboutus.html">About Us</a></li>
             <li><a href="pages/contactus.html">Contact Us</a></li>
-            <li><a href="/pages/pricing.html">Prices</a></li>
           </ul>
         </div>
         <div class="right">
-          <button onclick="location.href='/pages/loginandsignup.html?form=signup'" class="navbuts">Sign Up</button>
-          <button onclick="location.href='/pages/loginandsignup.html?form=signin'" class="navbuts">Sign In</button>
+          <div id="auth-buttons">
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signup'"
+              class="navbuts"
+              id="signupBtn"
+            >
+              Sign Up
+            </button>
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signin'"
+              class="navbuts"
+              id="signinBtn"
+            >
+              Sign In
+            </button>
+          </div>
+          <div id="profileIcon" class="hidden">
+            <img
+              src="images/profile.png"
+              alt="Profile"
+              class="profile-circle"
+              onclick="redirectToProfile()"
+            />
+          </div>
         </div>
       </nav>
     </header>
@@ -46,7 +67,7 @@
           <h1 class="main-heading">Collective decisions</h1>
           <h1 class="main-heading highlight">that matter</h1>
           <p class="description">
-            Make secure and legally valid collective decisions with the only
+            Make secure and valid collective decisions with the only
             certified and easy-to-use online voting system.
           </p>
           <button onclick="location.href='pages/createpoll.html'" class="demo-button">
@@ -106,7 +127,7 @@
         <div class="advantages-content">
           <h4>Our advantages</h4>
           <h2>
-            <span class="highlight">Less cost and effort</span>, more
+            <span class="highlight">Less effort</span>, more
             <span class="underlinedText"> agility</span>
           </h2>
           <p>
@@ -180,9 +201,9 @@
 
         <div class="featurette">
           <div class="text-section">
-            <h2>The Best Support Service</h2>
+            <h2>The Best ChatBot Support Service</h2>
             <p>
-              It has a dedicated project manager who will accompany you from the
+              It has a dedicated ChatBot who will accompany you from the
               start-up to the publication of results and the subsequent audit.
               We coordinate with your event agency so that everything goes
               smoothly.

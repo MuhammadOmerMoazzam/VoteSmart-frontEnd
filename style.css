@@ -806,3 +806,51 @@ p {
 .hidden {
   display: none;
 }
+.url-redirect-container {
+  display: flex;
+  gap: 10px;
+  background-color: white;
+  padding: 10px;
+  border: 2px solid #4d7ae3;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px; /* Restrict maximum width */
+  width: 100%;      /* Responsive width */
+  margin: 0 auto;   /* Center horizontally */
+}
+
+.url-redirect-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Ensure full height centering within parent */
+  padding: 20px; /* Add some spacing from edges */
+  background-color: #e9f1f6;
+}
+
+#url-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+#url-input:focus {
+  border-color: #4d7ae3;
+}
+
+#redirect-btn {
+  background-color: #4d7ae3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+#redirect-btn:hover {
+  background-color: #3b63ba;
+}

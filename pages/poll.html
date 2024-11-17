@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poll</title>
+    <link rel="stylesheet" href="poll.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="left">
+          <img
+            onclick="location.href='/index.html'"
+            src="/images/VoteSmart-logo.png"
+            alt="VoteSmart-logo"
+          />
+        </div>
+        <div class="center">
+          <ul>
+            <li><a href="pages/createpoll.html">Services</a></li>
+            <li><a href="pages/aboutus.html">About Us</a></li>
+            <li><a href="pages/contactus.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="right">
+          <div id="auth-buttons">
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signup'"
+              class="navbuts"
+              id="signupBtn"
+            >
+              Sign Up
+            </button>
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signin'"
+              class="navbuts"
+              id="signinBtn"
+            >
+              Sign In
+            </button>
+          </div>
+          <div id="profileIcon" class="hidden">
+            <img
+              src="/images/profile.png"
+              alt="Profile"
+              class="profile-circle"
+              onclick="redirectToProfile()"
+            />
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <header>
+        <h1>Vote for Your Candidate</h1>
+      </header>
+      <div class="poll-content">
+        <h2 id="poll-title">Loading poll...</h2>
+        <p id="poll-description">Loading description...</p>
+        <form id="poll-form">
+          <!-- Candidate list will be injected here dynamically -->
+        </form>
+        <button id="submit-vote" disabled>Submit Vote</button>
+      </div>
+    </div>
+
+    <script>
+      let userId = null;  // Declare userId globally
+
+// Check authentication status
+function checkAuthStatus() {
+  return fetch("http://localhost:8080/api/auth/status", {
+    credentials: "include", // Ensure cookies (session) are included
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const authButtons = document.getElementById("auth-buttons");
+      const profileIcon = document.getElementById("profileIcon");
+
+      // Store the userId globally if authenticated
+      userId = data.userId;
+      console.log(data);
+
+      if (data.authenticated) {
+        // User is logged in
+        authButtons.style.display = "none";
+        profileIcon.style.display = "block";
+      } else {
+        // User is not logged in
+        authButtons.style.display = "block";
+        profileIcon.style.display = "none";
+
+        // Redirect to login page if not authenticated
+        window.location.href = "/pages/loginandsignup.html?form=signin";
+      }
+    })
+    .catch((error) => {
+      console.error("Error checking authentication status:", error);
+      // Redirect to login page if auth check fails
+      window.location.href = "/pages/loginandsignup.html?form=signin";
+    });
+}
+
+// Call checkAuthStatus before fetching poll details
+window.onload = () => {
+  checkAuthStatus()  // Ensure this happens first
+    .then(() => {
+      const pollId = new URLSearchParams(window.location.search).get("id");
+      console.log(pollId); // Debugging log
+
+      // Poll details fetch happens only after authentication check
+      if (userId) {
+        fetchPollDetails(pollId);
+      }
+    });
+};
+
+// Fetch poll details
+function fetchPollDetails(pollId) {
+  fetch(`http://localhost:8080/api/polls/${pollId}`, {
+    credentials: "include", // Include session cookie for user identification
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const pollTitle = document.getElementById("poll-title");
+      const pollDescription = document.getElementById("poll-description");
+      const pollForm = document.getElementById("poll-form");
+      const submitButton = document.getElementById("submit-vote");
+
+      pollTitle.textContent = data.title;
+      pollDescription.textContent = data.description;
+
+      data.candidates.forEach((candidate) => {
+        const candidateDiv = document.createElement("div");
+        candidateDiv.classList.add("candidate");
+        candidateDiv.innerHTML = `
+          <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}">
+          <label for="candidate-${candidate.id}">
+            ${candidate.name} - ${candidate.age} - ${candidate.description}
+          </label>
+        `;
+        pollForm.appendChild(candidateDiv);
+      });
+
+      // Enable submit button when a radio button is selected
+      const radios = pollForm.querySelectorAll('input[type="radio"]');
+      radios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          submitButton.disabled = false;
+        });
+      });
+
+      // Handle vote submission
+      submitButton.addEventListener("click", () => {
+        const selectedCandidate = pollForm.querySelector('input[name="candidate"]:checked');
+        if (selectedCandidate) {
+          const candidateId = selectedCandidate.value;
+          submitVote(pollId, candidateId);
+        }
+      });
+    })
+    .catch((error) => {
+      alert("Failed to load poll.");
+    });
+}
+
+// Handle vote submission
+function submitVote(pollId, candidateId) {
+    console.log(pollId, candidateId);
+    fetch(`http://localhost:8080/api/votes/${pollId}/vote?candidateId=${candidateId}`, {
+        credentials: "include",
+        method: "POST", // Include session cookie for user identification
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success) {
+                alert(result.message); // "Vote recorded successfully."
+            } else {
+                alert(result.message); // Error messages like "User has already voted."
+            }
+        })
+        .catch((error) => {
+            alert("There was an error submitting your vote.");
+        });
+}
+
+
+// Redirect to the user's profile page when the profile icon is clicked
+function redirectToProfile() {
+  if (userId) {
+    window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
+  }
+}
+
+    </script>
+  </body>
+</html>

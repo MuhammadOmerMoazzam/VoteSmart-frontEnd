@@ -242,13 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Call the function when the page loads
     window.onload = checkAuthStatus;
 
-    // Redirect to the user's profile page when the profile icon is clicked
-    function redirectToProfile() {
-      const userId = localStorage.getItem("userId");
-      if (userId) {
-        window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
-      }
-    }
+   
   }
 
   if (path.endsWith("/pages/createpoll.html")) {
@@ -260,6 +254,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+ // Redirect to the user's profile page when the profile icon is clicked
+ function redirectToProfile() {
+  window.location.href = "/profile.html";
+}
 
 function redirectToUrl() {
   const urlInput = document.getElementById("url-input").value.trim(); // Get the value from the input field

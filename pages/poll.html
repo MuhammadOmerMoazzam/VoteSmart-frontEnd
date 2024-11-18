@@ -8,163 +8,165 @@
     <style>
       /* Add some basic styles for the page layout */
       /* General Body and Container Styles */
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #4d7ae3;
-}
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #4d7ae3;
+      }
 
-.container {
-  max-width: 800px;
-  margin: 100px auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
+      .container {
+        max-width: 800px;
+        margin: 100px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
 
-/* Header and Poll Title Styles */
-h1, h2 {
-  text-align: center;
-  color: #1d2e56;
-}
+      /* Header and Poll Title Styles */
+      h1,
+      h2 {
+        text-align: center;
+        color: #1d2e56;
+      }
 
-.poll-content {
-  margin-top: 20px;
-}
+      .poll-content {
+        margin-top: 20px;
+      }
 
-#poll-title {
-  font-size: 2.0rem;
-  color: #1d2e56;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
+      #poll-title {
+        font-size: 2rem;
+        color: #1d2e56;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
 
-#poll-description {
-  font-size: 1.1rem;
-  color: #1d2e56;
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: 500;
-}
+      #poll-description {
+        font-size: 1.1rem;
+        color: #1d2e56;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: 500;
+      }
 
-/* Candidate Card Styles */
-.candidate-card {
-  display: flex;
-  align-items: center;
-  background-color: #4d7ae32f;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
+      /* Candidate Card Styles */
+      .candidate-card {
+        display: flex;
+        align-items: center;
+        background-color: #4d7ae32f;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
 
-.candidate-card:hover {
-  background-color: #eef2f5;
-  transform: translateY(-2px);
-}
+      .candidate-card:hover {
+        background-color: #eef2f5;
+        transform: translateY(-2px);
+      }
 
-.candidate-card.selected {
-  background-color: #4caf50;
-  color: white;
-  transform: translateY(-3px); /* Slight lift on selection */
-}
+      .candidate-card.selected {
+        background-color: #4caf50;
+        color: white;
+        transform: translateY(-3px); /* Slight lift on selection */
+      }
 
-.candidate-info {
-  flex-grow: 1;
-  padding-left: 10px;
-}
+      .candidate-info {
+        flex-grow: 1;
+        padding-left: 10px;
+      }
 
-.candidate-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
+      .candidate-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
 
-.candidate-age, .candidate-description {
-  font-size: 1rem;
-  color: #050505;
-}
+      .candidate-age,
+      .candidate-description {
+        font-size: 1rem;
+        color: #050505;
+      }
 
-.candidate-age strong, .candidate-description strong {
-  color: #050505;
-}
+      .candidate-age strong,
+      .candidate-description strong {
+        color: #050505;
+      }
 
-/* Submit Vote Button */
-#submit-vote {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  width: 100%;
-  margin-top: 20px;
-  transition: background-color 0.3s;
-}
+      /* Submit Vote Button */
+      #submit-vote {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 20px;
+        transition: background-color 0.3s;
+      }
 
-#submit-vote:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
-}
+      #submit-vote:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+      }
 
-#submit-vote:hover:not(:disabled) {
-  background-color: #45a049;
-}
+      #submit-vote:hover:not(:disabled) {
+        background-color: #45a049;
+      }
 
-/* Popup Styles */
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  display: none;
-  z-index: 1000;
-  width: 80%;
-  max-width: 400px;
-  text-align: center;
-}
+      /* Popup Styles */
+      .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        display: none;
+        z-index: 1000;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+      }
 
-.popup .close-btn {
-  background-color: #ff6b6b;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 20px;
-}
+      .popup .close-btn {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
 
-.popup .close-btn:hover {
-  background-color: #ff3b3b;
-}
+      .popup .close-btn:hover {
+        background-color: #ff3b3b;
+      }
 
-/* Result Button */
-#result-button {
-  margin-top: 20px;
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  width: 100%;
-  transition: background-color 0.3s;
-}
+      /* Result Button */
+      #result-button {
+        margin-top: 20px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+        transition: background-color 0.3s;
+      }
 
-#result-button:hover {
-  background-color: #0b7dda;
-}
-
+      #result-button:hover {
+        background-color: #0b7dda;
+      }
     </style>
   </head>
   <body>
@@ -187,7 +189,7 @@ h1, h2 {
         <div class="right">
           <div id="auth-buttons">
             <button
-            hidden
+              hidden
               onclick="location.href='/pages/loginandsignup.html?form=signup'"
               class="navbuts"
               id="signupBtn"
@@ -195,7 +197,7 @@ h1, h2 {
               Sign Up
             </button>
             <button
-            hidden
+              hidden
               onclick="location.href='/pages/loginandsignup.html?form=signin'"
               class="navbuts"
               id="signinBtn"
@@ -228,13 +230,12 @@ h1, h2 {
         <button id="result-button">View Results</button>
       </div>
     </div>
-    
+
     <div id="vote-popup" class="popup">
       <h3 id="popup-message-header">Vote Recorded Successfully!</h3>
       <p id="popup-message-body">Your vote has been successfully recorded.</p>
       <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
-    
 
     <script>
       let userId = null; // Declare userId globally
@@ -294,103 +295,111 @@ h1, h2 {
   })
     .then((response) => response.json())
     .then((data) => {
+      const container = document.querySelector(".container");
       const pollTitle = document.getElementById("poll-title");
       const pollDescription = document.getElementById("poll-description");
       const pollForm = document.getElementById("poll-form");
       const submitButton = document.getElementById("submit-vote");
 
-      pollTitle.textContent = data.title;
-      pollDescription.textContent = data.description;
+      if (data.approved) {
+        // Show poll title and description
+        pollTitle.textContent = data.title;
+        pollDescription.textContent = data.description;
 
-      data.candidates.forEach((candidate) => {
-        const candidateDiv = document.createElement("div");
-        candidateDiv.classList.add("candidate");
-        candidateDiv.innerHTML = `
-          <div class="candidate-card">
-            <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}" class="candidate-radio" hidden>
-            <label for="candidate-${candidate.id}" class="candidate-label">
-              <div class="candidate-info">
-                <h3 class="candidate-name">Name: ${candidate.name}</h3>
-                <p class="candidate-age"><strong>Age:</strong> ${candidate.age}</p>
-                <p class="candidate-description"><strong>Description:</strong> ${candidate.description}</p>
-              </div>
-            </label>
-          </div>
-        `;
+        // Loop through candidates and create the candidate cards
+        data.candidates.forEach((candidate) => {
+          const candidateDiv = document.createElement("div");
+          candidateDiv.classList.add("candidate");
+          candidateDiv.innerHTML = `
+            <div class="candidate-card">
+              <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}" class="candidate-radio" hidden>
+              <label for="candidate-${candidate.id}" class="candidate-label">
+                <div class="candidate-info">
+                  <h3 class="candidate-name">Name: ${candidate.name}</h3>
+                  <p class="candidate-age"><strong>Age:</strong> ${candidate.age}</p>
+                  <p class="candidate-description"><strong>Description:</strong> ${candidate.description}</p>
+                </div>
+              </label>
+            </div>
+          `;
 
-        pollForm.appendChild(candidateDiv);
+          pollForm.appendChild(candidateDiv);
 
-        // Add click event listener to select the candidate
-        const candidateCard = candidateDiv.querySelector('.candidate-card');
-        candidateCard.addEventListener("click", () => {
-          // Unselect all other candidates
-          const allCandidates = pollForm.querySelectorAll('.candidate-card');
-          allCandidates.forEach((card) => {
-            card.classList.remove('selected');
+          // Add click event listener to select the candidate
+          const candidateCard = candidateDiv.querySelector(".candidate-card");
+          candidateCard.addEventListener("click", () => {
+            // Unselect all other candidates
+            const allCandidates = pollForm.querySelectorAll(".candidate-card");
+            allCandidates.forEach((card) => {
+              card.classList.remove("selected");
+            });
+
+            // Select this candidate
+            candidateCard.classList.add("selected");
+
+            // Check the hidden radio button
+            const radioButton = candidateDiv.querySelector('input[type="radio"]');
+            radioButton.checked = true;
+
+            // Enable submit button
+            submitButton.disabled = false;
           });
-
-          // Select this candidate
-          candidateCard.classList.add('selected');
-
-          // Check the hidden radio button
-          const radioButton = candidateDiv.querySelector('input[type="radio"]');
-          radioButton.checked = true;
-
-          // Enable submit button
-          submitButton.disabled = false;
         });
-      });
 
-      // Handle vote submission
-      submitButton.addEventListener("click", () => {
-        const selectedCandidate = pollForm.querySelector(
-          'input[name="candidate"]:checked'
-        );
-        if (selectedCandidate) {
-          const candidateId = selectedCandidate.value;
-          submitVote(pollId, candidateId);
-        }
-      });
+        // Handle vote submission
+        submitButton.addEventListener("click", () => {
+          const selectedCandidate = pollForm.querySelector('input[name="candidate"]:checked');
+          if (selectedCandidate) {
+            const candidateId = selectedCandidate.value;
+            submitVote(pollId, candidateId);
+          }
+        });
+      } else {
+        // If the poll is not approved, display a message and don't show voting options
+        container.innerHTML = `<h1>You can't vote in the ${data.title} poll because it is not approved by an admin.</h1>`;
+      }
     })
     .catch((error) => {
-      showPopup("Error", data.message);
+      console.error("Error:", error);
+      showPopup("Error", "An error occurred while fetching the poll details.");
     });
 }
 
       // Handle vote submission
       function submitVote(pollId, candidateId) {
-  fetch(`http://localhost:8080/api/votes/${pollId}/vote?candidateId=${candidateId}`, {
-    credentials: "include",
-    method: "POST",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        // Call showPopup with dynamic message from the backend
-        showPopup("Vote Recorded", data.message); // Assuming data.message contains the success message
-      } else {
-        showPopup("Error", data.message); // Show error message if available
+        fetch(
+          `http://localhost:8080/api/votes/${pollId}/vote?candidateId=${candidateId}`,
+          {
+            credentials: "include",
+            method: "POST",
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Call showPopup with dynamic message from the backend
+              showPopup("Vote Recorded", data.message); // Assuming data.message contains the success message
+            } else {
+              showPopup("Error", data.message); // Show error message if available
+            }
+          })
+          .catch((error) => {
+            console.error("Error submitting vote:", error);
+            showPopup("Error", "There was an error submitting your vote.");
+          });
       }
-    })
-    .catch((error) => {
-      console.error("Error submitting vote:", error);
-      showPopup("Error", "There was an error submitting your vote.");
-    });
-}
-
 
       // Show vote confirmation popup
       function showPopup(header, body) {
-  const popup = document.getElementById("vote-popup");
-  const messageHeader = document.getElementById("popup-message-header");
-  const messageBody = document.getElementById("popup-message-body");
+        const popup = document.getElementById("vote-popup");
+        const messageHeader = document.getElementById("popup-message-header");
+        const messageBody = document.getElementById("popup-message-body");
 
-  messageHeader.textContent = header;
-  messageBody.textContent = body;
+        messageHeader.textContent = header;
+        messageBody.textContent = body;
 
-  popup.style.display = "block";
-}
-
+        popup.style.display = "block";
+      }
 
       // Close vote confirmation popup
       function closePopup() {

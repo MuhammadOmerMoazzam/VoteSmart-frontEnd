@@ -5,6 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Poll</title>
     <link rel="stylesheet" href="poll.css" />
+    <style>
+      /* Add some basic styles for the page layout */
+      /* General Body and Container Styles */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #4d7ae3;
+}
+
+.container {
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Header and Poll Title Styles */
+h1, h2 {
+  text-align: center;
+  color: #1d2e56;
+}
+
+.poll-content {
+  margin-top: 20px;
+}
+
+#poll-title {
+  font-size: 2.0rem;
+  color: #1d2e56;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+#poll-description {
+  font-size: 1.1rem;
+  color: #1d2e56;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Candidate Card Styles */
+.candidate-card {
+  display: flex;
+  align-items: center;
+  background-color: #4d7ae32f;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.candidate-card:hover {
+  background-color: #eef2f5;
+  transform: translateY(-2px);
+}
+
+.candidate-card.selected {
+  background-color: #4caf50;
+  color: white;
+  transform: translateY(-3px); /* Slight lift on selection */
+}
+
+.candidate-info {
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+.candidate-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.candidate-age, .candidate-description {
+  font-size: 1rem;
+  color: #050505;
+}
+
+.candidate-age strong, .candidate-description strong {
+  color: #050505;
+}
+
+/* Submit Vote Button */
+#submit-vote {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+#submit-vote:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+#submit-vote:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+/* Popup Styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: none;
+  z-index: 1000;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.popup .close-btn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.popup .close-btn:hover {
+  background-color: #ff3b3b;
+}
+
+/* Result Button */
+#result-button {
+  margin-top: 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+#result-button:hover {
+  background-color: #0b7dda;
+}
+
+    </style>
   </head>
   <body>
     <header>
@@ -26,6 +187,7 @@
         <div class="right">
           <div id="auth-buttons">
             <button
+            hidden
               onclick="location.href='/pages/loginandsignup.html?form=signup'"
               class="navbuts"
               id="signupBtn"
@@ -33,6 +195,7 @@
               Sign Up
             </button>
             <button
+            hidden
               onclick="location.href='/pages/loginandsignup.html?form=signin'"
               class="navbuts"
               id="signinBtn"
@@ -62,62 +225,70 @@
           <!-- Candidate list will be injected here dynamically -->
         </form>
         <button id="submit-vote" disabled>Submit Vote</button>
+        <button id="result-button">View Results</button>
       </div>
     </div>
+    
+    <div id="vote-popup" class="popup">
+      <h3 id="popup-message-header">Vote Recorded Successfully!</h3>
+      <p id="popup-message-body">Your vote has been successfully recorded.</p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+    
 
     <script>
-      let userId = null;  // Declare userId globally
+      let userId = null; // Declare userId globally
 
-// Check authentication status
-function checkAuthStatus() {
-  return fetch("http://localhost:8080/api/auth/status", {
-    credentials: "include", // Ensure cookies (session) are included
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      const authButtons = document.getElementById("auth-buttons");
-      const profileIcon = document.getElementById("profileIcon");
+      // Check authentication status
+      function checkAuthStatus() {
+        return fetch("http://localhost:8080/api/auth/status", {
+          credentials: "include", // Ensure cookies (session) are included
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const authButtons = document.getElementById("auth-buttons");
+            const profileIcon = document.getElementById("profileIcon");
 
-      // Store the userId globally if authenticated
-      userId = data.userId;
-      console.log(data);
+            // Store the userId globally if authenticated
+            userId = data.userId;
 
-      if (data.authenticated) {
-        // User is logged in
-        authButtons.style.display = "none";
-        profileIcon.style.display = "block";
-      } else {
-        // User is not logged in
-        authButtons.style.display = "block";
-        profileIcon.style.display = "none";
+            if (data.authenticated) {
+              // User is logged in
+              authButtons.style.display = "none";
+              profileIcon.style.display = "block";
+            } else {
+              // User is not logged in
+              authButtons.style.display = "block";
+              profileIcon.style.display = "none";
 
-        // Redirect to login page if not authenticated
-        window.location.href = "/pages/loginandsignup.html?form=signin";
+              // Redirect to login page if not authenticated
+              window.location.href = "/pages/loginandsignup.html?form=signin";
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking authentication status:", error);
+            // Redirect to login page if auth check fails
+            window.location.href = "/pages/loginandsignup.html?form=signin";
+          });
       }
-    })
-    .catch((error) => {
-      console.error("Error checking authentication status:", error);
-      // Redirect to login page if auth check fails
-      window.location.href = "/pages/loginandsignup.html?form=signin";
-    });
-}
 
-// Call checkAuthStatus before fetching poll details
-window.onload = () => {
-  checkAuthStatus()  // Ensure this happens first
-    .then(() => {
-      const pollId = new URLSearchParams(window.location.search).get("id");
-      console.log(pollId); // Debugging log
+      // Call checkAuthStatus before fetching poll details
+      window.onload = () => {
+        checkAuthStatus() // Ensure this happens first
+          .then(() => {
+            const pollId = new URLSearchParams(window.location.search).get(
+              "id"
+            );
 
-      // Poll details fetch happens only after authentication check
-      if (userId) {
-        fetchPollDetails(pollId);
-      }
-    });
-};
+            // Poll details fetch happens only after authentication check
+            if (userId) {
+              fetchPollDetails(pollId);
+            }
+          });
+      };
 
-// Fetch poll details
-function fetchPollDetails(pollId) {
+      // Fetch poll details
+      function fetchPollDetails(pollId) {
   fetch(`http://localhost:8080/api/polls/${pollId}`, {
     credentials: "include", // Include session cookie for user identification
   })
@@ -135,25 +306,46 @@ function fetchPollDetails(pollId) {
         const candidateDiv = document.createElement("div");
         candidateDiv.classList.add("candidate");
         candidateDiv.innerHTML = `
-          <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}">
-          <label for="candidate-${candidate.id}">
-            ${candidate.name} - ${candidate.age} - ${candidate.description}
-          </label>
+          <div class="candidate-card">
+            <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}" class="candidate-radio" hidden>
+            <label for="candidate-${candidate.id}" class="candidate-label">
+              <div class="candidate-info">
+                <h3 class="candidate-name">Name: ${candidate.name}</h3>
+                <p class="candidate-age"><strong>Age:</strong> ${candidate.age}</p>
+                <p class="candidate-description"><strong>Description:</strong> ${candidate.description}</p>
+              </div>
+            </label>
+          </div>
         `;
-        pollForm.appendChild(candidateDiv);
-      });
 
-      // Enable submit button when a radio button is selected
-      const radios = pollForm.querySelectorAll('input[type="radio"]');
-      radios.forEach((radio) => {
-        radio.addEventListener("change", () => {
+        pollForm.appendChild(candidateDiv);
+
+        // Add click event listener to select the candidate
+        const candidateCard = candidateDiv.querySelector('.candidate-card');
+        candidateCard.addEventListener("click", () => {
+          // Unselect all other candidates
+          const allCandidates = pollForm.querySelectorAll('.candidate-card');
+          allCandidates.forEach((card) => {
+            card.classList.remove('selected');
+          });
+
+          // Select this candidate
+          candidateCard.classList.add('selected');
+
+          // Check the hidden radio button
+          const radioButton = candidateDiv.querySelector('input[type="radio"]');
+          radioButton.checked = true;
+
+          // Enable submit button
           submitButton.disabled = false;
         });
       });
 
       // Handle vote submission
       submitButton.addEventListener("click", () => {
-        const selectedCandidate = pollForm.querySelector('input[name="candidate"]:checked');
+        const selectedCandidate = pollForm.querySelector(
+          'input[name="candidate"]:checked'
+        );
         if (selectedCandidate) {
           const candidateId = selectedCandidate.value;
           submitVote(pollId, candidateId);
@@ -161,38 +353,61 @@ function fetchPollDetails(pollId) {
       });
     })
     .catch((error) => {
-      alert("Failed to load poll.");
+      showPopup("Error", data.message);
     });
 }
 
-// Handle vote submission
-function submitVote(pollId, candidateId) {
-    console.log(pollId, candidateId);
-    fetch(`http://localhost:8080/api/votes/${pollId}/vote?candidateId=${candidateId}`, {
-        credentials: "include",
-        method: "POST", // Include session cookie for user identification
+      // Handle vote submission
+      function submitVote(pollId, candidateId) {
+  fetch(`http://localhost:8080/api/votes/${pollId}/vote?candidateId=${candidateId}`, {
+    credentials: "include",
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Call showPopup with dynamic message from the backend
+        showPopup("Vote Recorded", data.message); // Assuming data.message contains the success message
+      } else {
+        showPopup("Error", data.message); // Show error message if available
+      }
     })
-        .then((response) => response.json())
-        .then((result) => {
-            if (result.success) {
-                alert(result.message); // "Vote recorded successfully."
-            } else {
-                alert(result.message); // Error messages like "User has already voted."
-            }
-        })
-        .catch((error) => {
-            alert("There was an error submitting your vote.");
-        });
+    .catch((error) => {
+      console.error("Error submitting vote:", error);
+      showPopup("Error", "There was an error submitting your vote.");
+    });
 }
 
 
-// Redirect to the user's profile page when the profile icon is clicked
-function redirectToProfile() {
-  if (userId) {
-    window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
-  }
+      // Show vote confirmation popup
+      function showPopup(header, body) {
+  const popup = document.getElementById("vote-popup");
+  const messageHeader = document.getElementById("popup-message-header");
+  const messageBody = document.getElementById("popup-message-body");
+
+  messageHeader.textContent = header;
+  messageBody.textContent = body;
+
+  popup.style.display = "block";
 }
 
+
+      // Close vote confirmation popup
+      function closePopup() {
+        const popup = document.getElementById("vote-popup");
+        popup.style.display = "none";
+      }
+
+      // Redirect to poll results page
+      document.getElementById("result-button").addEventListener("click", () => {
+        const pollId = new URLSearchParams(window.location.search).get("id");
+        window.location.href = `result.html?id=${pollId}`;
+      });
+
+      // Redirect to profile page
+      function redirectToProfile() {
+        window.location.href = "/profile.html";
+      }
     </script>
   </body>
 </html>

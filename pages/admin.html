@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f5f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    /* Popup styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup-content input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .popup-content button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .popup-content button:hover {
+      background: #45a049;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+    }
+
+    /* Admin container */
+    #admin-container {
+      padding: 20px;
+    }
+
+    .poll-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    .poll-title {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .poll-description {
+      margin-bottom: 15px;
+      color: #666;
+    }
+
+    .poll-meta {
+      font-size: 0.9em;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .candidates {
+      margin-bottom: 20px;
+    }
+
+    .candidate {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+
+    .candidate h4 {
+      margin: 0 0 5px 0;
+    }
+
+    .candidate p {
+      margin: 0;
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .approve {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    .approve:hover {
+      background-color: #45a049;
+    }
+
+    .reject {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    .reject:hover {
+      background-color: #e53935;
+    }
+
+    .no-polls {
+      text-align: center;
+      color: #888;
+      font-size: 1.2em;
+      margin-top: 50px;
+    }
+
+    /* Success Popup Styles */
+    #success-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #success-popup .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    #success-popup button {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #success-popup button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Popup -->
+  <div id="login-popup" class="popup">
+    <div class="popup-content">
+      <h2>Admin Login</h2>
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button onclick="loginAdmin()">Login</button>
+      <p id="error-message" class="error-message"></p>
+    </div>
+  </div>
+
+  <!-- Admin Panel Content -->
+  <div id="admin-container" style="display: none;">
+    <h2>Pending Polls</h2>
+    <div id="poll-list"></div>
+  </div>
+
+  <!-- Success Popup -->
+  <div id="success-popup" class="popup">
+    <div class="popup-content">
+      <h3 id="success-message"></h3>
+      <button onclick="closeSuccessPopup()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const adminLoginUrl = "http://localhost:8080/api/admin/login";
+    const pendingPollsUrl = "http://localhost:8080/api/admin/pending-polls";
+    const approvePollUrl = "http://localhost:8080/api/admin/approve";
+    const rejectPollUrl = "http://localhost:8080/api/admin/reject";
+
+    // Show login popup on page load
+    window.onload = function () {
+      document.getElementById("login-popup").style.display = "flex";
+    };
+
+    function loginAdmin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      fetch(`${adminLoginUrl}?username=${username}&password=${password}`, {
+        method: "POST",
+      })
+        .then((response) => {
+          if (response.ok) {
+            document.getElementById("login-popup").style.display = "none";
+            document.getElementById("admin-container").style.display = "block";
+            loadPendingPolls();
+          } else {
+            document.getElementById("error-message").textContent =
+              "Invalid credentials!";
+          }
+        })
+        .catch((error) => {
+          document.getElementById("error-message").textContent =
+            "Error occurred!";
+        });
+    }
+
+    function loadPendingPolls() {
+      fetch(pendingPollsUrl)
+        .then((response) => response.json())
+        .then((polls) => {
+          const pollList = document.getElementById("poll-list");
+          pollList.innerHTML = ""; // Clear previous list
+
+          if (polls.length === 0) {
+            pollList.innerHTML =
+              '<p class="no-polls">No pending polls to display.</p>';
+            return;
+          }
+
+          polls.forEach((poll) => {
+            const pollCard = document.createElement("div");
+            pollCard.classList.add("poll-card");
+
+            let candidatesHTML = "";
+            poll.candidates.forEach((candidate) => {
+              candidatesHTML += ` 
+                <div class="candidate">
+                  <h4>Name: ${candidate.name}</h4>
+                  <h4>Age: ${candidate.age}</h4>
+                  <p>Description: ${candidate.description}</p>
+                  <p>Votes: ${candidate.voteCount}</p>
+                </div>`;
+            });
+
+            pollCard.innerHTML = `
+              <div class="poll-title">${poll.title}</div>
+              <div class="poll-description">${poll.description}</div>
+              <div class="poll-meta">Creator ID: ${poll.creatorId}</div>
+              <div class="candidates">
+                <h3>Candidates:</h3>
+                ${candidatesHTML}
+              </div>
+              <div class="buttons">
+                <button class="approve" onclick="approvePoll('${poll.id}')">Approve</button>
+                <button class="reject" onclick="rejectPoll('${poll.id}')">Reject</button>
+              </div>
+            `;
+
+            pollList.appendChild(pollCard);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching polls:", error);
+        });
+    }
+
+    function rejectPoll(pollId) {
+      fetch(`${rejectPollUrl}/${pollId}`, {
+        method: "POST",
+      })
+        .then((response) => response.text())
+        .then((result) => {
+          showSuccessPopup(result);
+          loadPendingPolls();
+        })
+        .catch((error) => {
+          console.error("Error rejecting poll:", error);
+        });
+    }
+
+    function approvePoll(pollId) {
+      fetch(`${approvePollUrl}/${pollId}`, {
+        method: "POST",
+      })
+        .then((response) => response.text())
+        .then((result) => {
+          showSuccessPopup(result);
+          loadPendingPolls();
+        })
+        .catch((error) => {
+          console.error("Error approving poll:", error);
+        });
+    }
+
+    function showSuccessPopup(message) {
+      document.getElementById("success-message").textContent = message;
+      document.getElementById("success-popup").style.display = "flex";
+    }
+
+    function closeSuccessPopup() {
+      document.getElementById("success-popup").style.display = "none";
+    }
+  </script>
+</body>
+</html>

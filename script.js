@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
             for (let i = 0; i < candidateNames.length; i++) {
                 candidates.push({
                     name: candidateNames[i].value,
-                    age: candidateAges[i].value,
                     description: candidateDescriptions[i].value,
                 });
             }

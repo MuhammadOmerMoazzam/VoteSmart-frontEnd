@@ -122,9 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
                       const id = data.id
                       const URL = `127.0.0.1:3000/pages/poll.html?id=${id}`
                     console.log("Poll created successfully:", data);
-                    showPopup(`Poll created successfully! But it is currently on pending to be approved, success 
+                    showPopup(`Poll created successfully! But it is currently on pending to be approved by an Admin!
 
-                      Your Poll Share Link ${URL}` );
+                      Your Poll Share Link`, URL );
                     // Optionally, reset the form or redirect after success
                     document.getElementById("pollForm").reset();
                 })
@@ -135,20 +135,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     // Function to show popup notifications
-    function showPopup(message, type) {
+    function showPopup(message, url) {
       const popupModal = document.getElementById("popupModal");
       const popupMessage = document.getElementById("popupMessage");
-      const popupContent = document.querySelector(".popup-content");
-  
-      // Set the message
+      const popupURL = document.getElementById("popupURL");
+    
+      // Set the message and URL
       popupMessage.innerText = message;
-  
-      // Add success or error class
-      popupContent.classList.add(type); // 'success' or 'error'
-  
+      popupURL.value = url;
+    
       // Show the modal
       popupModal.style.display = "flex";
-  }
+    }
+    
+    
+    
   
   // Close the popup modal
   function closePopup() {
@@ -268,4 +269,10 @@ function redirectToUrl() {
   } else {
      console.log("erroiro");
   }
+}
+function copyToClipboard() {
+  const popupURL = document.getElementById("popupURL");
+  popupURL.select(); 
+  popupURL.setSelectionRange(0, 99999); 
+  document.execCommand("copy"); 
 }

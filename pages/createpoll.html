@@ -105,8 +105,13 @@
     <div id="popupModal" class="popup-modal">
       <div class="popup-content">
         <span class="popup-close">&times;</span>
-        <p id="popupMessage">Poll Created Successfully!</p>
+        <p id="popupMessage"></p>
+        <div class="url-container">
+          <input id="popupURL" type="text" readonly />
+          <button id="copyButton" onclick="copyToClipboard()">Copy</button>
+        </div>
       </div>
-    </div>    
+    </div>
+       
 </body>
 </html>

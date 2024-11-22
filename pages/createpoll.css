@@ -235,45 +235,47 @@ header nav {
       }
 /* Popup modal background */
 .popup-modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    z-index: 1000;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(29, 46, 86, 0.8); /* Slight transparency */
     justify-content: center;
     align-items: center;
-    text-align: center;
-}
-
-/* Popup content */
-.popup-content {
-    background-color: #fff;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background-color: #fff; /* Main background */
+    color: #1d2e56; /* Text color */
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
     position: relative;
-}
-
-/* Close button */
-.popup-close {
+    max-width: 400px;
+    width: 90%;
+  }
+  
+  .popup-close {
     position: absolute;
     top: 10px;
-    right: 10px;
-    font-size: 20px;
-    font-weight: bold;
+    right: 15px;
+    font-size: 18px;
     cursor: pointer;
-}
+    color: #4d7ae3;
+  }
+  
 
 /* Message style */
 #popupMessage {
+    margin-bottom: 20px;
     font-size: 18px;
-    color: #333;
-}
+    font-weight: bold;
+  }
+  
 
 /* Success message */
 .popup.success {
@@ -284,3 +286,37 @@ header nav {
 .popup.error {
     background-color: #dc3545;
 }
+
+.url-container {
+    display: flex;
+    align-items: center;
+    background-color: #f4f8ff; /* Subtle blue background */
+    border: 1px solid #4d7ae3;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 10px;
+  }
+  
+  #popupURL {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 5px;
+    font-size: 14px;
+    color: #1d2e56;
+    outline: none;
+  }
+  
+  #copyButton {
+    background-color: #4d7ae3;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  #copyButton:hover {
+    background-color: #375ba8; /* Slightly darker blue on hover */
+  }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="left">
+          <img
+            onclick="location.href='/index.html'"
+            src="/images/VoteSmart-logo.png"
+            alt="VoteSmart-logo"
+          />
+        </div>
+        <div class="center">
+          <ul>
+            <li><a href="createpoll.html">Services</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="contactus.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="right">
+          <div id="auth-buttons">
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signup'"
+              class="navbuts"
+              id="signupBtn"
+            >
+              Sign Up
+            </button>
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signin'"
+              class="navbuts"
+              id="signinBtn"
+            >
+              Sign In
+            </button>
+          </div>
+          <div id="profileIcon" class="hidden">
+            <img
+              src="/images/profile.png"
+              alt="Profile"
+              class="profile-circle"
+              onclick="redirectToProfile()"
+            />
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="profile-container">
+      <h1>User information</h1>
+      <div class="user-info">
+        <div class="user-field">
+          <label>ID:</label>
+          <span id="userID">Loading...</span>
+        </div>
+        <div class="user-field">
+          <label>Name:</label>
+          <span id="userName">Loading...</span>
+        </div>
+        <div class="user-field">
+          <label>Email:</label>
+          <span id="userEmail">Loading...</span>
+        </div>
+        <div class="user-field">
+          <label>Password:</label>
+          <span id="userJoinedDate">Loading...</span>
+        </div>
+      </div>
+
+      <div class="polls-container">
+        <!-- Approved Polls -->
+        <div class="polls-box" id="approved-polls">
+          <h2>Approved Polls</h2>
+          <div class="poll-list" id="approved-list"></div>
+        </div>
+
+        <!-- Pending Polls -->
+        <div class="polls-box" id="pending-polls">
+          <h2>Pending Polls</h2>
+          <div class="poll-list" id="pending-list"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Fetch user data and populate the profile
+      function loadUserProfile() {
+        fetch("http://localhost:8080/api/users/me", { credentials: "include" })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch user data");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById("userID").textContent = data.id || "N/A";
+            document.getElementById("userName").textContent =
+              data.name || "N/A";
+            document.getElementById("userEmail").textContent =
+              data.email || "N/A";
+            document.getElementById("userJoinedDate").textContent =
+              data.password || "N/A";
+          })
+          .catch((error) => {
+            console.error("Error fetching user profile:", error);
+            document.getElementById("userName").textContent =
+              "Error loading data";
+            document.getElementById("userEmail").textContent =
+              "Error loading data";
+            document.getElementById("userJoinedDate").textContent =
+              "Error loading data";
+          });
+      }
+
+      // Check authentication and load profile
+      function checkAuthStatus() {
+        fetch("http://localhost:8080/api/auth/status", {
+          credentials: "include",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const authButtons = document.getElementById("auth-buttons");
+            const profileIcon = document.getElementById("profileIcon");
+
+            if (data.authenticated) {
+              authButtons.style.display = "none";
+              profileIcon.style.display = "block";
+              loadUserProfile();
+              fetchAndDisplayPolls(); // Load user profile only if authenticated
+            } else {
+              authButtons.style.display = "block";
+              profileIcon.style.display = "none";
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking authentication status:", error);
+          });
+      }
+      // Function to fetch and display polls
+      function fetchAndDisplayPolls() {
+        fetch("http://localhost:8080/api/users/me/polls", {
+          credentials: "include",
+        })
+          .then((response) => response.json())
+          .then((polls) => {
+            console.log(polls);
+            const approvedContainer = document.getElementById("approved-list");
+            const pendingContainer = document.getElementById("pending-list");
+
+            // Clear containers
+            approvedContainer.innerHTML = "";
+            pendingContainer.innerHTML = "";
+
+            // Show data in LIFO order: Latest polls first
+            const reversedPolls = polls.reverse();
+
+            // Separate approved and pending polls
+            reversedPolls.forEach((poll) => {
+              const pollCard = document.createElement("div");
+              pollCard.classList.add("poll-card");
+              pollCard.innerHTML = `
+  <div class="poll-header">
+    <h3>${poll.title || "Untitled Poll"}</h3>
+    <span class="status-badge ${poll.approved ? "approved" : "pending"}">
+      ${poll.approved ? "Approved" : "Pending"}
+    </span>
+  </div>
+  <p>${poll.description || "No description provided."}</p>
+`;
+
+              if (poll.approved) {
+                approvedContainer.appendChild(pollCard);
+              } else {
+                pendingContainer.appendChild(pollCard);
+              }
+            });
+          })
+          .catch((error) => console.error("Error fetching polls:", error));
+      }
+
+      window.onload = checkAuthStatus;
+    </script>
+  </body>
+</html>

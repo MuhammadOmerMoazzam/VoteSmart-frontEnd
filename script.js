@@ -65,13 +65,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Call the function when the page loads
     window.onload = checkAuthStatus;
 
-    // Redirect to the user's profile page when the profile icon is clicked
-    function redirectToProfile() {
-        const userId = localStorage.getItem("userId");
-        if (userId) {
-            window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
-        }
-    }
+    // // Redirect to the user's profile page when the profile icon is clicked
+    // function redirectToProfile() {
+    //     const userId = localStorage.getItem("userId");
+    //     if (userId) {
+    //         window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
+    //     }
+    // }
 
     // Add an event listener for the form submission
     document
@@ -253,8 +253,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
  // Redirect to the user's profile page when the profile icon is clicked
  function redirectToProfile() {
-  window.location.href = "/profile.html";
+  
+  fetch("http://localhost:8080/api/users/me", {
+    credentials: "include",
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    const userId = data.id;
+    if (userId) {
+      // Redirect to profile page with userId as a query parameter
+      window.location.href = `/pages/profile.html?userId=${userId}`;
+    } else {
+      // Fallback to default profile page
+      window.location.href = "/pages/profile.html";
+    }
+  })
+  
 }
+
 
 function redirectToUrl() {
   const urlInput = document.getElementById("url-input").value.trim(); // Get the value from the input field

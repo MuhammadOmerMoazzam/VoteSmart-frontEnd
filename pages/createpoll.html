@@ -54,6 +54,33 @@
         </nav>
       </header>
 
+      <div id="chatbot">
+        <!-- Chat Icon -->
+        <div id="chat-icon" onclick="toggleChat()">
+            💬
+        </div>
+    
+        <!-- Chat Window -->
+        <div id="chat-window" class="hidden">
+            <div id="chat-header">
+                <span>VoteSmart Virtual Assistant</span>
+                <button id="close-btn" onclick="toggleChat()">X</button>
+            </div>
+            <div id="chat-messages">
+                <div class="bot-message">Hi! How can I help you today? 😁</div>
+            </div>
+            <div id="predefined-questions">
+                <button onclick="sendPredefinedMessage('How to create a poll?')">How to create a poll?</button>
+                <button onclick="sendPredefinedMessage('How to vote?')">How to vote?</button>
+                <button onclick="sendPredefinedMessage('Can I vote twice?')">Can I vote twice?</button>
+            </div>
+            <div id="chat-input-area">
+                <input type="text" id="user-input" placeholder="Type your message here...">
+                <button id="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <h1>Create a Poll</h1>
         <form id="pollForm">

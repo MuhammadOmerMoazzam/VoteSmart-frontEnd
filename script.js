@@ -199,11 +199,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
 
-    document
-      .getElementById("scrollTopBtn")
-      .addEventListener("click", function () {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+    // document
+    //   .getElementById("scrollTopBtn")
+    //   .addEventListener("click", function () {
+    //     window.scrollTo({ top: 0, behavior: "smooth" });
+    //   });
 
     // Check if the user is authenticated
     function checkAuthStatus() {
@@ -292,4 +292,81 @@ function copyToClipboard() {
   popupURL.select(); 
   popupURL.setSelectionRange(0, 99999); 
   document.execCommand("copy"); 
+}
+document.getElementById("user-input").addEventListener("keypress", function(event) {
+  // Check if the Enter key (keyCode 13) was pressed
+  if (event.key === "Enter") {
+    // Prevent the default action (form submission or newline in input)
+    event.preventDefault();
+    // Call the sendMessage function to send the message
+    sendMessage();
+  }
+});
+
+
+
+
+function toggleChat() {
+  const chatWindow = document.getElementById("chat-window");
+  
+  // Check if the chat window is hidden
+  if (chatWindow.style.display === "none" || chatWindow.style.display === "") {
+    chatWindow.style.display = "flex";  // Show the chat window with flex display
+  } else {
+    chatWindow.style.display = "none";   // Hide the chat window
+  }
+}
+
+// Ensure chat window starts hidden when the page loads
+window.onload = function() {
+  const chatWindow = document.getElementById("chat-window");
+  chatWindow.style.display = "none";  // Start with chat window hidden
+};
+// Send Predefined Message
+function sendPredefinedMessage(message) {
+  document.getElementById("user-input").value = message;
+  sendMessage();
+}
+
+// Send Message
+async function sendMessage() {
+  const userInput = document.getElementById("user-input").value.trim();
+  if (!userInput) return;
+
+  // Display user message
+  appendMessage("user-message", userInput);
+  document.getElementById("user-input").value = "";
+
+  // Fetch bot response
+  try {
+      const response = await fetch("http://localhost:8080/api/chat/send", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sender: "user", content: userInput }),
+      });
+
+      const data = await response.json();
+      appendMessage("bot-message", data.content);
+  } catch (error) {
+      appendMessage("bot-message", "Oops! Something went wrong. Please try again.");
+  }
+}
+
+
+
+
+
+
+// Append Message to Chat
+function appendMessage(className, content) {
+  const chatMessages = document.getElementById("chat-messages");
+  const messageDiv = document.createElement("div");
+  messageDiv.className = className;
+  messageDiv.textContent = content;
+  chatMessages.appendChild(messageDiv);
+
+  // Auto-scroll to bottom
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }

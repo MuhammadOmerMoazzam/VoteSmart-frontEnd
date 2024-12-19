@@ -5,6 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
     <link rel="stylesheet" href="profile.css" />
+    <style>
+      /* Styling for the new buttons and the popup */
+
+      .poll-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .result-button,
+      .delete-button {
+        padding: 10px 15px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .result-button {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .result-button:hover {
+        background-color: #218838;
+      }
+
+      .delete-button {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .delete-button:hover {
+        background-color: #c82333;
+      }
+
+      /* Popup Styling */
+      .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .popup {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .popup h2 {
+        margin-bottom: 20px;
+      }
+
+      .popup-buttons {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .popup-buttons button {
+        padding: 10px 15px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .popup-buttons .cancel-button {
+        background-color: #6c757d;
+        color: white;
+      }
+
+      .popup-buttons .confirm-button {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .popup-buttons button:hover {
+        opacity: 0.8;
+      }
+
+      /* Success popup styling */
+      .success-popup .popup-buttons .confirm-button {
+        background-color: #28a745;
+      }
+
+      .logout-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+    </style>
   </head>
   <body>
     <header>
@@ -87,7 +195,31 @@
       </div>
     </main>
 
+    <!-- Delete Confirmation Popup -->
+    <div class="popup-overlay" id="popup-overlay">
+      <div class="popup">
+        <h2>Are you sure you want to delete this poll?</h2>
+        <div class="popup-buttons">
+          <button class="cancel-button" onclick="closePopup()">Cancel</button>
+          <button class="confirm-button" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div class="popup-overlay" id="success-popup-overlay">
+      <div class="popup success-popup">
+        <h2>Poll Deleted Successfully!</h2>
+        <div class="popup-buttons">
+          <button class="confirm-button" onclick="closeSuccessPopup()">Close</button>
+        </div>
+      </div>
+    </div>
+    <button class="logout-button" onclick="logout()">Logout</button>
+
     <script>
+      let pollToDelete = null;
+
       // Fetch user data and populate the profile
       function loadUserProfile() {
         fetch("http://localhost:8080/api/users/me", { credentials: "include" })
@@ -141,6 +273,7 @@
             console.error("Error checking authentication status:", error);
           });
       }
+
       // Function to fetch and display polls
       function fetchAndDisplayPolls() {
         fetch("http://localhost:8080/api/users/me/polls", {
@@ -156,22 +289,33 @@
             approvedContainer.innerHTML = "";
             pendingContainer.innerHTML = "";
 
-            // Show data in LIFO order: Latest polls first
-            // const reversedPolls = polls.reverse();
-
             // Separate approved and pending polls
             polls.forEach((poll) => {
               const pollCard = document.createElement("div");
               pollCard.classList.add("poll-card");
               pollCard.innerHTML = `
-  <div class="poll-header">
-    <h3>${poll.title || "Untitled Poll"}</h3>
-    <span class="status-badge ${poll.approved ? "approved" : "pending"}">
-      ${poll.approved ? "Approved" : "Pending"}
-    </span>
-  </div>
-  <p>${poll.description || "No description provided."}</p>
-`;
+                <div class="poll-header">
+                  <h3>${poll.title || "Untitled Poll"}</h3>
+                  <span class="status-badge ${
+                    poll.approved ? "approved" : "pending"
+                  }">
+                    ${poll.approved ? "Approved" : "Pending"}
+                  </span>
+                </div>
+                <p>${poll.description || "No description provided."}</p>
+                <div class="poll-actions">
+                  ${
+                    poll.approved
+                      ? `<button class="result-button" onclick="viewResult('${poll.id}')">
+                          View Result
+                         </button>`
+                      : ""
+                  }
+                  <button class="delete-button" onclick="showDeletePopup('${poll.id}')">
+                    Delete
+                  </button>
+                </div>
+              `;
 
               if (poll.approved) {
                 approvedContainer.appendChild(pollCard);
@@ -183,29 +327,80 @@
           .catch((error) => console.error("Error fetching polls:", error));
       }
 
+      // Function to show the delete popup
+      function showDeletePopup(pollId) {
+        pollToDelete = pollId;
+        document.getElementById("popup-overlay").style.display = "flex";
+      }
+
+      // Function to close the popup
+      function closePopup() {
+        document.getElementById("popup-overlay").style.display = "none";
+      }
+
+      // Function to confirm the deletion
+      function confirmDelete() {
+        if (pollToDelete) {
+          fetch(`http://localhost:8080/api/polls/delete/${pollToDelete}`, {
+            method: "DELETE",
+            credentials: "include",
+          })
+            .then((response) => {
+              if (response.ok) {
+                showSuccessPopup(); // Show success popup
+                fetchAndDisplayPolls();
+                closePopup();
+              } else {
+                alert("Failed to delete the poll.");
+              }
+            })
+            .catch((error) => console.error("Error deleting poll:", error));
+        }
+      }
+
+      // Function to show the success popup
+      function showSuccessPopup() {
+        document.getElementById("success-popup-overlay").style.display = "flex";
+      }
+
+      // Function to close the success popup
+      function closeSuccessPopup() {
+        document.getElementById("success-popup-overlay").style.display = "none";
+      }
+
+      // Function to view poll results
+      function viewResult(pollId) {
+        window.location.href = `/pages/result.html?id=${pollId}`;
+      }
+
       window.onload = checkAuthStatus;
 
       function redirectToProfile() {
-  
-  fetch("http://localhost:8080/api/users/me", {
-    credentials: "include",
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-    const userId = data.id;
-    if (userId) {
-      // Redirect to profile page with userId as a query parameter
-      window.location.href = `/pages/profile.html?userId=${userId}`;
-    } else {
-      // Fallback to default profile page
-      window.location.href = "/pages/profile.html";
-    }
-  })
-  
-}
-
-
+        fetch("http://localhost:8080/api/users/me", {
+          credentials: "include",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const userId = data.id;
+            window.location.href = `/pages/profile.html?id=${userId}`;
+          })
+          .catch((error) => console.error("Error fetching user profile:", error));
+      }
+      function logout() {
+        fetch("http://localhost:8080/api/logout", {
+          method: "DELETE",
+          credentials: "include",
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "/pages/loginandsignup.html?form=signin";
+            } else {
+              console.error("Logout failed");
+            }
+          })
+          .catch((error) => console.error("Error logging out:", error));
+      }
     </script>
   </body>
 </html>

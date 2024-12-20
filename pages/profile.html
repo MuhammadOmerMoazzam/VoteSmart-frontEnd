@@ -15,7 +15,8 @@
       }
 
       .result-button,
-      .delete-button {
+      .delete-button,
+      .share-button {
         padding: 10px 15px;
         font-size: 14px;
         border: none;
@@ -26,6 +27,10 @@
 
       .result-button {
         background-color: #28a745;
+        color: white;
+      }
+      .share-button {
+        background-color: #007bff;
         color: white;
       }
 
@@ -111,7 +116,61 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
+      /* Modal Styles */
+      .share-modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      }
 
+      .share-modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      #pollLink {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: 1px solid #ddd;
+      }
+
+      .copy-button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      .copy-button:hover {
+        background-color: #45a049;
+      }
     </style>
   </head>
   <body>
@@ -201,17 +260,28 @@
         <h2>Are you sure you want to delete this poll?</h2>
         <div class="popup-buttons">
           <button class="cancel-button" onclick="closePopup()">Cancel</button>
-          <button class="confirm-button" onclick="confirmDelete()">Delete</button>
+          <button class="confirm-button" onclick="confirmDelete()">
+            Delete
+          </button>
         </div>
       </div>
     </div>
-
+    <div id="shareModal" class="share-modal">
+      <div class="share-modal-content">
+        <span class="close-button" onclick="closeShareModal()">&times;</span>
+        <p>Share this Poll:</p>
+        <input type="text" id="pollLink" readonly />
+        <button class="copy-button" onclick="copyLink()">Copy Link</button>
+      </div>
+    </div>
     <!-- Success Popup -->
     <div class="popup-overlay" id="success-popup-overlay">
       <div class="popup success-popup">
         <h2>Poll Deleted Successfully!</h2>
         <div class="popup-buttons">
-          <button class="confirm-button" onclick="closeSuccessPopup()">Close</button>
+          <button class="confirm-button" onclick="closeSuccessPopup()">
+            Close
+          </button>
         </div>
       </div>
     </div>
@@ -288,9 +358,9 @@
             // Clear containers
             approvedContainer.innerHTML = "";
             pendingContainer.innerHTML = "";
-
+            const reversePolls = polls.reverse();
             // Separate approved and pending polls
-            polls.forEach((poll) => {
+            reversePolls.forEach((poll) => {
               const pollCard = document.createElement("div");
               pollCard.classList.add("poll-card");
               pollCard.innerHTML = `
@@ -308,10 +378,15 @@
                     poll.approved
                       ? `<button class="result-button" onclick="viewResult('${poll.id}')">
                           View Result
+                         </button>
+                         <button class="share-button" onclick="sharePoll('${poll.id}')">
+                          Share
                          </button>`
                       : ""
                   }
-                  <button class="delete-button" onclick="showDeletePopup('${poll.id}')">
+                  <button class="delete-button" onclick="showDeletePopup('${
+                    poll.id
+                  }')">
                     Delete
                   </button>
                 </div>
@@ -385,7 +460,9 @@
             const userId = data.id;
             window.location.href = `/pages/profile.html?id=${userId}`;
           })
-          .catch((error) => console.error("Error fetching user profile:", error));
+          .catch((error) =>
+            console.error("Error fetching user profile:", error)
+          );
       }
       function logout() {
         fetch("http://localhost:8080/api/logout", {
@@ -400,6 +477,30 @@
             }
           })
           .catch((error) => console.error("Error logging out:", error));
+      }
+
+      // Function to show the share modal
+      function sharePoll(pollId) {
+        const pollUrl = `127.0.0.1:3000/pages/poll.html?id=${pollId}`; // Update this URL as needed
+        document.getElementById("pollLink").value = pollUrl; // Set the input field with the poll URL
+
+        // Show the modal
+        document.getElementById("shareModal").style.display = "block";
+      }
+
+      // Function to close the share modal
+      function closeShareModal() {
+        document.getElementById("shareModal").style.display = "none";
+      }
+
+      // Function to copy the poll link to the clipboard
+      function copyLink() {
+        const link = document.getElementById("pollLink");
+        link.select();
+        link.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the input
+        document.execCommand("copy");
       }
     </script>
   </body>

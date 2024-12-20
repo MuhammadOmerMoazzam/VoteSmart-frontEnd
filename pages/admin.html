@@ -262,7 +262,8 @@
             return;
           }
 
-          polls.forEach((poll) => {
+          const reversePolls = polls.reverse();
+          reversePolls.forEach((poll) => {
             const pollCard = document.createElement("div");
             pollCard.classList.add("poll-card");
 

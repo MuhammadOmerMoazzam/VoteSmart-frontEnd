@@ -20,9 +20,9 @@
           </div>
           <div class="center">
             <ul>
-              <li><a href="pages/createpoll.html">Services</a></li>
+              <li><a href="/pages/createpoll.html">Services</a></li>
               <li><a href="/pages/aboutus.html">About Us</a></li>
-              <li><a href="pages/contactus.html">Contact Us</a></li>
+              <li><a href="/pages/contactus.html">Contact Us</a></li>
             </ul>
           </div>
           <div class="right">
@@ -161,6 +161,26 @@
         window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
       }
     }
+    function redirectToProfile() {
+  
+  fetch("http://localhost:8080/api/users/me", {
+    credentials: "include",
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    const userId = data.id;
+    if (userId) {
+      // Redirect to profile page with userId as a query parameter
+      window.location.href = `/pages/profile.html?userId=${userId}`;
+    } else {
+      // Fallback to default profile page
+      window.location.href = "/pages/profile.html";
+    }
+  })
+  
+}
+
     </script>
 </body>
 </html>

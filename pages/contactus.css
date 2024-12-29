@@ -280,7 +280,7 @@
     left: 0px;
     top: 0px;
     height: 300px;
-    background-color: #4d7ae3;
+    background: linear-gradient(45deg, #4d7ae3, #00356d);
   }
   
   @media (max-width: 768px) {

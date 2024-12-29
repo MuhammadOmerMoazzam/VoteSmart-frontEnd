@@ -105,7 +105,7 @@ main {
   width: 100%;
 }
 .hero {
-  background-color: #4d7ae3;
+  background: linear-gradient(45deg, #4d7ae3, #00356d);
   height: 620px;
   margin-top: 72px;
   display: flex;
@@ -492,7 +492,7 @@ p {
 }
 
 .know-more-section {
-  background-color: #4d7ae3;
+  background: linear-gradient(45deg, #4d7ae3, #00356d);
   color: white;
   text-align: left;
   padding: 40px 460px;
@@ -864,7 +864,7 @@ p {
 
 /* Chat Icon */
 #chat-icon {
-  background-color: #3f76f5;
+  background: linear-gradient(45deg, #4d7ae3, #00356d);
   color: white;
   width: 60px;
   height: 60px;
@@ -879,6 +879,9 @@ p {
   -webkit-user-select: none; /* For Safari */
   -moz-user-select: none; /* For Firefox */
   outline: none; /* Remove focus outline */
+}
+#chat-icon img{
+  filter: invert(100%);
 }
 /* Chat Window */
 #chat-window {

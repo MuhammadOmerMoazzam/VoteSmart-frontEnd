@@ -3,7 +3,7 @@ body {
     margin: 0;
     box-sizing: border-box;
     font-family: sans-serif;
-    background-color: #4d7ae3;
+    background: linear-gradient(45deg, #4d7ae3, #00356d);
     display: flex;               
     justify-content: center;     
     align-items: flex-start;  /* Change to flex-start for top alignment */

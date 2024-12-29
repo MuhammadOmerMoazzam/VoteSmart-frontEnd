@@ -224,7 +224,7 @@ main {
 /* Button Styling */
 .demo-button {
   background-color: #ffffff;
-  color: #4a90e2;
+  color: #1d2e56;
   font-size: 1rem;
   font-weight: 600;
   padding: 12px 24px;
@@ -864,7 +864,7 @@ p {
 
 /* Chat Icon */
 #chat-icon {
-  background-color: #007bff;
+  background-color: #3f76f5;
   color: white;
   width: 60px;
   height: 60px;

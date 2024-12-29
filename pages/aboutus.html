@@ -1,33 +1,572 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About us</title>
-    <link rel="stylesheet" href="aboutus.css">
-    <link rel="icon" href="/icon.ico" type="image/x-icon">
-</head>
-<body>
-    <div class="responsive-container-block bigContainer">
-        <div class="responsive-container-block Container">
-          <div class="responsive-container-block leftSide">
-            <p class="text-blk heading">
-              Meet Our Creative Team
-            </p>
-            <p class="text-blk subHeading">
-              Semaj Africa is an online education platform that delivers video courses, programs and resources for Individual, Advertising &amp; Media Specialist, Online Marketing Professionals, Freelancers and anyone looking to pursue a career in digital marketing, Accounting, Web development, Programming. Multimedia and CAD design.
-            </p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - VoteSmart</title>
+    <link rel="stylesheet" href="aboutus.css" />
+    <link rel="icon" href="/icon.ico" type="image/x-icon" />
+    <style>
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+ 
+  body {
+    background-color: #4d7ae3;
+    color: #1d2e56;
+    margin-top: 102px; /* To prevent overlap with fixed navbar */
+  }
+  header nav {
+    z-index: 990;
+    background-color: #fff;
+    border-bottom: 1px solid #d1d1d1;
+    justify-content: space-around;
+    align-items: center;
+    max-width: none;
+    height: 72px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 7.5rem;
+    padding-right: 7.5rem;
+    display: flex;
+    position: fixed;
+    inset: 0% 0% auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .underlinedText {
+    text-decoration: underline;
+    }
+    
+    /* Logo styling */
+    .left img {
+    cursor: pointer;
+    height: 60px;
+    }
+    /* Centered navbar links with space between items */
+    .center ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 30px; /* Space between links */
+    }
+    
+    /* Styling for each navbar item */
+    .center ul li {
+    display: inline-block;
+    }
+    
+    /* Link styling within the nav items */
+    .center ul li a {
+    text-decoration: none;
+    color: #1d2e56; /* Text color */
+    font-size: 16px;
+    padding: 8px 12px;
+    transition: color 0.3s ease; /* Smooth color transition */
+    font-weight: bold; /* Make text slightly bold for visibility */
+    position: relative; /* Positioning for pseudo-element */
+    }
+    
+    /* Underline effect using a pseudo-element */
+    .center ul li a::after {
+    content: ''; /* Pseudo-element for underline */
+    position: absolute; /* Positioning relative to the link */
+    left: 50%; /* Start in the middle */
+    bottom: -4px; /* Position just below the text */
+    width: 0; /* Initial width */
+    height: 2px; /* Height of the underline */
+    background: #243f76; /* Color of the underline */
+    transition: width 0.4s ease, left 0.4s ease; /* Smooth transition for width and position */
+    }
+    
+    /* Link hover effect with underline animation */
+    .center ul li a:hover {
+    color: #243f76; /* Change text color on hover */
+    }
+    
+    /* Hover effect for the underline */
+    .center ul li a:hover::after {
+    width: 100%; /* Full width on hover */
+    left: 0; /* Position to the left */
+    }
+    
+    /* Right section button styling */
+    .right .navbuts {
+    background-color: #1d2e56; /* Button background color */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    /* Button hover effect with animation */
+    .right .navbuts:hover {
+    background-color: #243f76; /* Slightly lighter shade on hover */
+    transform: scale(1.05); /* Slight zoom on hover */
+    }
+    .navbuts {
+    position: relative; /* Positioning for pseudo-element */
+    overflow: hidden; /* Prevent overflow of the shine effect */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for button */
+    font-size: 16px; /* Font size */
+    color: white; /* Text color */
+    background-color: #007BFF; /* Background color */
+    cursor: pointer;
+    height: 45px; 
+    }
+    
+    /* Shine effect */
+    .navbuts::before {
+    content: ''; /* Pseudo-element for shine effect */
+    position: absolute; /* Positioning relative to the button */
+    top: -20%; /* Start above the button */
+    left: -20%; /* Start from the left side */
+    width: 140%; /* Extend to cover the button */
+    height: 140%; /* Extend to cover the button */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%); /* Shine gradient */
+    transform: translateX(-100%) rotate(30deg); /* Initial position and rotation */
+    transition: transform 0.5s ease; /* Smooth transition for shine */
+    pointer-events: none; /* Prevents interaction with the shine effect */
+    }
+    
+    .navbuts:hover::before {
+    transform: translateX(100%) rotate(30deg); /* Moves the shine across the button */
+    }
+  
+    .profile-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #ddd;
+      }
+      
+      .hidden {
+        display: none;
+      }
+      /* Profile Container */
+.profile-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-out;
+}
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.5;
+      }
+      .footer {
+        background-color: #4d7ae3;
+        color: #ffffff;
+        text-align: center;
+        padding: 40px 20px;
+        position: relative;
+        width: 100%;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .footer-logo {
+        margin-bottom: 50px;
+        margin-top: 40px;
+      }
+      .footer-logo img {
+        width: 150px;
+      }
+      .footer-social-links {
+        margin: 20px 0;
+      }
+      .footer-social-links a {
+        color: #ffffff;
+        margin: 0 15px;
+        text-decoration: none;
+        font-size: 24px;
+      }
+      .footer-social-links a:hover {
+        color: #ffffff;
+      }
+      .footer-nav {
+        margin: 20px 0;
+      }
+      .footer-nav a {
+        color: #ffffff;
+        margin: 0 15px;
+        text-decoration: none;
+        font-size: 16px;
+      }
+      .footer-nav a:hover {
+        color: #ffffff;
+      }
+      .footer-text {
+        font-size: 14px;
+        color: #ffffff;
+        margin-top: 20px;
+      }
+      .footer::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        width: 40px;
+        height: 4px;
+        background-color: #ffffff;
+        transform: translateX(-50%);
+        border-radius: 2px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .header {
+        text-align: center;
+        padding: 100px 20px;
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+        border-radius: 12px;
+        margin-bottom: 40px;
+        margin-top: 72px;
+      }
+
+      .header h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      .header p {
+        margin-top: 15px;
+        font-size: 1.5rem;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+      }
+
+      .section {
+        background-color: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .section h2 {
+        font-size: 2.5rem;
+        color: #007bff;
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 8px;
+        margin-bottom: 25px;
+      }
+
+      .section p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+      }
+
+      .section ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      .section ul li {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .section ul li:last-child {
+        margin-bottom: 0;
+      }
+
+      .section ul li::before {
+        content: "\2022";
+        font-size: 2rem;
+        color: #007bff;
+        margin-right: 10px;
+      }
+
+      .team-members {
+        margin-top: 20px;
+      }
+
+      .team-members li {
+        margin: 10px 0;
+        font-size: 1.2rem;
+      }
+      /* #0056b3 */
+      /* .footer {
+        text-align: center;
+        padding: 30px 20px;
+        background-color: #0056b3;
+        color: white;
+        border-radius: 12px;
+        margin-top: 50px;
+      } */
+
+      .image-section {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .image-section img {
+        max-width: 100%;
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+      }
+
+      .image-section img:hover {
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2.5rem;
+        }
+
+        .header p {
+          font-size: 1.1rem;
+        }
+
+        .section {
+          padding: 20px;
+        }
+
+        .section h2 {
+          font-size: 2rem;
+        }
+
+        .section p {
+          font-size: 1rem;
+        }
+
+        .team-members li {
+          font-size: 1rem;
+        }
+        
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="left">
+          <img
+            onclick="location.href='/index.html'"
+            src="/images/VoteSmart-logo.png"
+            alt="VoteSmart-logo"
+          />
+        </div>
+        <div class="center">
+          <ul>
+            <li><a href="/pages/createpoll.html">Services</a></li>
+            <li><a href="/pages/aboutus.html">About Us</a></li>
+            <li><a href="/pages/contactus.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="right">
+          <div id="auth-buttons">
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signup'"
+              class="navbuts"
+              id="signupBtn"
+            >
+              Sign Up
+            </button>
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signin'"
+              class="navbuts"
+              id="signinBtn"
+            >
+              Sign In
+            </button>
           </div>
-          <div class="responsive-container-block rightSide">
-            <img class="number1img" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET32.jpg">
-            <img class="number2img" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/d14.png">
-            <img class="number3img" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/b245.png">
-            <img class="number5img" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/Customer supports.png">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/80wm-V3MnEM?si=UbysSwPjw-yScNPK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" class="number4vid" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <img class="number7img" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/d51.png">
-            <img class="number6img" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/d12.png">
+          <div id="profileIcon" class="hidden">
+            <img
+              src="images/profile.png"
+              alt="Profile"
+              class="profile-circle"
+              onclick="redirectToProfile()"
+            />
           </div>
         </div>
+      </nav>
+    </header>
+    <div class="header">
+      <h1>Welcome to VoteSmart</h1>
+      <p>Your one-stop solution for secure and transparent online voting.</p>
+    </div>
+
+    <div class="container">
+      <div class="content">
+        <div class="section">
+          <h2>About VoteSmart</h2>
+          <p>
+            VoteSmart is a robust platform developed to streamline online voting
+            processes. With a focus on user security and transparency, VoteSmart
+            empowers organizations and communities to conduct polls
+            effortlessly. Our platform is adaptable for a wide range of
+            scenarios, ensuring every vote counts and is counted securely.
+          </p>
+          <div class="image-section">
+            <img
+              src="/images/elections.jpg"
+              alt="VoteSmart Features"
+            />
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Key Features</h2>
+          <ul>
+            <li>Secure authentication system for users.</li>
+            <li>
+              Ability to create and manage polls with detailed candidate
+              profiles.
+            </li>
+            <li>Admin approval workflow for poll verification.</li>
+            <li>Real-time voting results and analytics.</li>
+            <li>Email notifications for important poll updates.</li>
+            <li>Dedicated user-friendly interface for voters and admins.</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Meet Our Team</h2>
+          <ul class="team-members">
+            <li>
+              <strong>Hafiz Muhammad Mutashim Mohsin</strong> (Group Leader) -
+              2023F-BSE-099
+            </li>
+            <li><strong>Izhar ul Haq</strong> - 2023F-BSE-320</li>
+            <li><strong>Rayyan Wamiq</strong> - 2023F-BSE-095</li>
+            <li><strong>Muhammad Omer Moazzam</strong> - 2023F-BSE-084</li>
+          </ul>
+          <p>
+            The VoteSmart team comprises talented software engineering students
+            dedicated to delivering high-quality, user-focused solutions. Our
+            collaborative effort ensures that VoteSmart remains a reliable and
+            innovative voting platform.
+          </p>
+        </div>
+
+        <div class="section">
+          <h2>Our Mission</h2>
+          <p>
+            Our mission at VoteSmart is to revolutionize the voting experience
+            by leveraging technology to make elections more accessible, secure,
+            and efficient. We aim to provide tools that uphold democratic values
+            and inspire trust among voters and organizers alike.
+          </p>
+        </div>
       </div>
-</body>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-logo">
+        <img src="/images/VoteSmart-logo.png" alt="Logo" />
+      </div>
+      <div class="footer-social-links">
+        <a href="https://www.facebook.com" target="_blank">Facebook</a>
+        <a href="https://www.twitter.com" target="_blank">Twitter</a>
+        <a
+          href="https://www.linkedin.com/in/mutashim-mohsin-846833288/"
+          target="_blank"
+          >LinkedIn</a
+        >
+        <a href="https://www.instagram.com" target="_blank">Instagram</a>
+      </div>
+      <div class="footer-nav">
+        <a href="#">Services</a> <a href="/pages/aboutus.html">About Us</a>
+        <a href="/pages/contactus.html">Contact Us</a>
+        <a href="#">Prices</a>
+      </div>
+      <div class="footer-text">© 2024 Vote Smart. All rights reserved.</div>
+    </footer>
+
+    <script>
+      function checkAuthStatus() {
+      fetch("http://localhost:8080/api/auth/status", {
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const authButtons = document.getElementById("auth-buttons");
+          const profileIcon = document.getElementById("profileIcon");
+          const userId = data.userId;
+          console.log(data);
+
+          if (data.authenticated) {
+            // Hide login/signup buttons and show profile icon
+            authButtons.style.display = "none";
+            profileIcon.style.display = "block";
+            // Optionally, you can store the userId in a global variable or localStorage if needed
+           
+          } else {
+            // Show login/signup buttons and hide profile icon
+            authButtons.style.display = "block";
+            profileIcon.style.display = "none";
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking authentication status:", error);
+        });
+    }
+
+    
+
+    // Call the function when the page loads
+    window.onload = checkAuthStatus;
+
+   
+    function redirectToProfile() {
+  
+  fetch("http://localhost:8080/api/users/me", {
+    credentials: "include",
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    const userId = data.id;
+    if (userId) {
+      // Redirect to profile page with userId as a query parameter
+      window.location.href = `/pages/profile.html?userId=${userId}`;
+    } else {
+      // Fallback to default profile page
+      window.location.href = "/pages/profile.html";
+    }
+  })
+  
+}
+
+
+    </script>
+  </body>
 </html>

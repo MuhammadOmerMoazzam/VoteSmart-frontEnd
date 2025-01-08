@@ -82,52 +82,52 @@
     </div>
     
     <div class="container">
-        <h1>Create a Poll</h1>
-        <form id="pollForm">
-            <div class="form-group">
-                <label for="title">Poll Title:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="pollType">Poll Type:</label>
-                <select id="pollType" name="pollType">
-                    <option value="educational">Educational Poll</option>
-                    <option value="professional">Professional Poll</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="securityOption">Security Option:</label>
-                <select id="securityOption" name="securityOption">
-                    <option value="one_vote_per_session">One Vote per Session</option>
-                    <option value="one_vote_per_account">One Vote per Account</option>
-                </select>
-            </div>
-           
-            <div id="candidatesSection">
-                <h3>Candidate Information</h3>
-                <div class="candidate-info">
-                    <div class="form-group">
-                        <label for="candidateName">Name:</label>
-                        <input type="text" name="candidateName[]" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="candidateDescription">Description:</label>
-                        <textarea name="candidateDescription[]" rows="2" required></textarea>
-                    </div>
-                    <button type="button" class="remove-btn">Remove</button>
-                </div>
-            </div>
-            <button type="button" id="addOptionBtn">Add More Options</button>
-            <div class="form-group">
-                <button type="submit">Create Poll</button>
-            </div>
-        </form>
-    </div>
+      <h1>Create a Poll</h1>
+      <form id="pollForm">
+          <div class="form-group">
+              <label for="title">Poll Title:</label>
+              <input type="text" id="title" name="title" required>
+          </div>
+          <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea id="description" name="description" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+              <label for="pollType">Poll Type:</label>
+              <select id="pollType" name="pollType" onchange="toggleDomainField()">
+                  <option value="general">General Poll</option>
+                  <option value="domain_specific">Domain Specific Poll</option>
+              </select>
+          </div>
+  
+          <!-- Domain Field (visible when Domain Specific poll is selected) -->
+          <div id="domainField" style="display: none;" class="form-group">
+              <label for="allowedDomain">Allowed Domain:</label>
+              <input type="text" id="allowedDomain" name="allowedDomain" placeholder="Enter domain (e.g., yourdomain.com)">
+          </div>
+  
+          <div id="candidatesSection">
+              <h3>Candidate Information</h3>
+              <div class="candidate-info">
+                  <div class="form-group">
+                      <label for="candidateName">Name:</label>
+                      <input type="text" name="candidateName[]" required>
+                  </div>
+  
+                  <div class="form-group">
+                      <label for="candidateDescription">Description:</label>
+                      <textarea name="candidateDescription[]" rows="2" required></textarea>
+                  </div>
+                  <button type="button" class="remove-btn">Remove</button>
+              </div>
+          </div>
+          <button type="button" id="addOptionBtn">Add More Options</button>
+          <div class="form-group">
+              <button type="submit">Create Poll</button>
+          </div>
+      </form>
+  </div>
+  
     <!-- Add this modal in your HTML body just before the closing </body> tag -->
     <div id="popupModal" class="popup-modal">
       <div class="popup-content">

@@ -239,6 +239,7 @@
 
     <script>
       let userId = null; // Declare userId globally
+      let userEmail = null; // Declare userEmail globally
 
       // Check authentication status
       function checkAuthStatus() {
@@ -288,82 +289,177 @@
           });
       };
 
+      async function getUserDetails() {
+        try {
+          const response = await fetch("http://localhost:8080/api/users/me", {
+            credentials: "include",
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            userEmail = data.email; // This should now be assigned the correct email value
+            console.log(userEmail);
+          } else {
+            console.error("Error fetching user details, response not OK");
+          }
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      }
+      getUserDetails()
       // Fetch poll details
       function fetchPollDetails(pollId) {
-  fetch(`http://localhost:8080/api/polls/${pollId}`, {
-    credentials: "include", // Include session cookie for user identification
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      const container = document.querySelector(".container");
-      const pollTitle = document.getElementById("poll-title");
-      const pollDescription = document.getElementById("poll-description");
-      const pollForm = document.getElementById("poll-form");
-      const submitButton = document.getElementById("submit-vote");
+        fetch(`http://localhost:8080/api/polls/${pollId}`, {
+          credentials: "include", // Include session cookie for user identification
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(userEmail);
+            console.log(data);
+            console.log();
+            const container = document.querySelector(".container");
+            const pollTitle = document.getElementById("poll-title");
+            const pollDescription = document.getElementById("poll-description");
+            const pollForm = document.getElementById("poll-form");
+            const submitButton = document.getElementById("submit-vote");
 
-      if (data.approved) {
-        // Show poll title and description
-        pollTitle.textContent = data.title;
-        pollDescription.textContent = data.description;
+            if (data.approved) {
+              if (data.pollType === "general") {
+                // If it's a general poll, only check approval
+                pollTitle.textContent = data.title;
+                pollDescription.textContent = data.description;
 
-        // Loop through candidates and create the candidate cards
-        data.candidates.forEach((candidate) => {
-          const candidateDiv = document.createElement("div");
-          candidateDiv.classList.add("candidate");
-          candidateDiv.innerHTML = `
-            <div class="candidate-card">
-              <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}" class="candidate-radio" hidden>
-              <label for="candidate-${candidate.id}" class="candidate-label">
-                <div class="candidate-info">
-                  <h3 class="candidate-name">Name: ${candidate.name}</h3>
-                  
-                  <p class="candidate-description"><strong>Description:</strong> ${candidate.description}</p>
-                </div>
-              </label>
+                // Loop through candidates and create the candidate cards
+                data.candidates.forEach((candidate) => {
+                  const candidateDiv = document.createElement("div");
+                  candidateDiv.classList.add("candidate");
+                  candidateDiv.innerHTML = `
+        <div class="candidate-card">
+          <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}" class="candidate-radio" hidden>
+          <label for="candidate-${candidate.id}" class="candidate-label">
+            <div class="candidate-info">
+              <h3 class="candidate-name">Name: ${candidate.name}</h3>
+              <p class="candidate-description"><strong>Description:</strong> ${candidate.description}</p>
             </div>
-          `;
+          </label>
+        </div>
+      `;
 
-          pollForm.appendChild(candidateDiv);
+                  pollForm.appendChild(candidateDiv);
 
-          // Add click event listener to select the candidate
-          const candidateCard = candidateDiv.querySelector(".candidate-card");
-          candidateCard.addEventListener("click", () => {
-            // Unselect all other candidates
-            const allCandidates = pollForm.querySelectorAll(".candidate-card");
-            allCandidates.forEach((card) => {
-              card.classList.remove("selected");
-            });
+                  // Add click event listener to select the candidate
+                  const candidateCard =
+                    candidateDiv.querySelector(".candidate-card");
+                  candidateCard.addEventListener("click", () => {
+                    // Unselect all other candidates
+                    const allCandidates =
+                      pollForm.querySelectorAll(".candidate-card");
+                    allCandidates.forEach((card) => {
+                      card.classList.remove("selected");
+                    });
 
-            // Select this candidate
-            candidateCard.classList.add("selected");
+                    // Select this candidate
+                    candidateCard.classList.add("selected");
 
-            // Check the hidden radio button
-            const radioButton = candidateDiv.querySelector('input[type="radio"]');
-            radioButton.checked = true;
+                    // Check the hidden radio button
+                    const radioButton = candidateDiv.querySelector(
+                      'input[type="radio"]'
+                    );
+                    radioButton.checked = true;
 
-            // Enable submit button
-            submitButton.disabled = false;
+                    // Enable submit button
+                    submitButton.disabled = false;
+                  });
+                });
+
+                // Handle vote submission
+                submitButton.addEventListener("click", () => {
+                  const selectedCandidate = pollForm.querySelector(
+                    'input[name="candidate"]:checked'
+                  );
+                  if (selectedCandidate) {
+                    const candidateId = selectedCandidate.value;
+                    submitVote(pollId, candidateId);
+                  }
+                });
+              } else if (
+                data.pollType === "domain_specific" &&
+                userEmail.toLowerCase().includes(data.allowedDomain.toLowerCase())
+              ) {
+                // If it's a domain-specific poll, check for domain and approval
+                pollTitle.textContent = data.title;
+                pollDescription.textContent = data.description;
+
+                // Loop through candidates and create the candidate cards
+                data.candidates.forEach((candidate) => {
+                  const candidateDiv = document.createElement("div");
+                  candidateDiv.classList.add("candidate");
+                  candidateDiv.innerHTML = `
+        <div class="candidate-card">
+          <input type="radio" name="candidate" value="${candidate.id}" id="candidate-${candidate.id}" class="candidate-radio" hidden>
+          <label for="candidate-${candidate.id}" class="candidate-label">
+            <div class="candidate-info">
+              <h3 class="candidate-name">Name: ${candidate.name}</h3>
+              <p class="candidate-description"><strong>Description:</strong> ${candidate.description}</p>
+            </div>
+          </label>
+        </div>
+      `;
+
+                  pollForm.appendChild(candidateDiv);
+
+                  // Add click event listener to select the candidate
+                  const candidateCard =
+                    candidateDiv.querySelector(".candidate-card");
+                  candidateCard.addEventListener("click", () => {
+                    // Unselect all other candidates
+                    const allCandidates =
+                      pollForm.querySelectorAll(".candidate-card");
+                    allCandidates.forEach((card) => {
+                      card.classList.remove("selected");
+                    });
+
+                    // Select this candidate
+                    candidateCard.classList.add("selected");
+
+                    // Check the hidden radio button
+                    const radioButton = candidateDiv.querySelector(
+                      'input[type="radio"]'
+                    );
+                    radioButton.checked = true;
+
+                    // Enable submit button
+                    submitButton.disabled = false;
+                  });
+                });
+
+                // Handle vote submission
+                submitButton.addEventListener("click", () => {
+                  const selectedCandidate = pollForm.querySelector(
+                    'input[name="candidate"]:checked'
+                  );
+                  if (selectedCandidate) {
+                    const candidateId = selectedCandidate.value;
+                    submitVote(pollId, candidateId);
+                  }
+                });
+              } else {
+                // If the user is not eligible to vote, show a message
+                container.innerHTML = `<h1>You can't vote in the ${data.title} poll because your're not eligible to vote in the poll!</h1>`;
+              }
+            } else {
+              // If the poll is not approved, display a message and don't show voting options
+              container.innerHTML = `<h1>You can't vote in the ${data.title} poll because it is not approved by an admin.</h1>`;
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showPopup(
+              "Error",
+              "An error occurred while fetching the poll details."
+            );
           });
-        });
-
-        // Handle vote submission
-        submitButton.addEventListener("click", () => {
-          const selectedCandidate = pollForm.querySelector('input[name="candidate"]:checked');
-          if (selectedCandidate) {
-            const candidateId = selectedCandidate.value;
-            submitVote(pollId, candidateId);
-          }
-        });
-      } else {
-        // If the poll is not approved, display a message and don't show voting options
-        container.innerHTML = `<h1>You can't vote in the ${data.title} poll because it is not approved by an admin.</h1>`;
       }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      showPopup("Error", "An error occurred while fetching the poll details.");
-    });
-}
 
       // Handle vote submission
       function submitVote(pollId, candidateId) {

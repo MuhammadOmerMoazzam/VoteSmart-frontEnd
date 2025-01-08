@@ -32,48 +32,80 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-
     // Check if the user is authenticated
     function checkAuthStatus() {
-        fetch("http://localhost:8080/api/auth/status", {
-            credentials: "include",
+      fetch("http://localhost:8080/api/auth/status", {
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const authButtons = document.getElementById("auth-buttons");
+          const profileIcon = document.getElementById("profileIcon");
+          const userId = data.userId;
+          console.log(data);
+
+          if (data.authenticated) {
+            // Hide login/signup buttons and show profile icon
+            authButtons.style.display = "none";
+            profileIcon.style.display = "block";
+            // Optionally, you can store the userId in a global variable or localStorage if needed
+           
+          } else {
+            // Show login/signup buttons and hide profile icon
+            authButtons.style.display = "block";
+            profileIcon.style.display = "none";
+          }
         })
-            .then((response) => response.json())
-            .then((data) => {
-                const authButtons = document.getElementById("auth-buttons");
-                const profileIcon = document.getElementById("profileIcon");
-                const userId = data.userId;
-
-                console.log(data);
-
-                if (data.authenticated) {
-                    // Hide login/signup buttons and show profile icon
-                    authButtons.style.display = "none";
-                    profileIcon.style.display = "block";
-                    // Optionally, store userId in localStorage if needed
-                } else {
-                    // Show login/signup buttons and hide profile icon
-                    authButtons.style.display = "block";
-                    profileIcon.style.display = "none";
-                }
-            })
-            .catch((error) => {
-                console.error("Error checking authentication status:", error);
-            });
+        .catch((error) => {
+          console.error("Error checking authentication status:", error);
+        });
     }
 
     // Call the function when the page loads
-    window.onload = checkAuthStatus;
+    window.onload = checkAuthStatus();
 
-    // // Redirect to the user's profile page when the profile icon is clicked
-    // function redirectToProfile() {
-    //     const userId = localStorage.getItem("userId");
-    //     if (userId) {
-    //         window.location.href = `/profile/${userId}`; // Replace with the actual profile page URL
-    //     }
-    // }
+    // Function to show popup notifications
+    function showPopup(message, url) {
+        const popupModal = document.getElementById("popupModal");
+        const popupMessage = document.getElementById("popupMessage");
+        const popupURL = document.getElementById("popupURL");
 
-    // Add an event listener for the form submission
+        // Set the message and URL
+        popupMessage.innerText = message;
+        popupURL.value = url;
+
+        // Show the modal
+        popupModal.style.display = "flex";
+    }
+
+    // Close the popup modal
+    function closePopup() {
+        const popupModal = document.getElementById("popupModal");
+        popupModal.style.display = "none"; // Hide the modal
+    }
+
+    // Add event listener to close the popup when the 'x' button is clicked
+    document.querySelector(".popup-close").addEventListener("click", closePopup);
+
+    // Function to handle showing/hiding the domain field based on poll type
+    function toggleDomainField() {
+        const pollType = document.getElementById("pollType").value;
+        const domainField = document.getElementById("domainField");
+
+        if (pollType === "domain_specific") {
+            domainField.style.display = "block";
+        } else {
+            domainField.style.display = "none";
+        }
+    }
+
+    // Attach the change event listener to pollType select
+    document.getElementById("pollType").addEventListener("change", toggleDomainField);
+
+    // Initial check on page load
+    window.onload = toggleDomainField;
+
+    // Add event listener for the form submission
     document
         .getElementById("pollForm")
         .addEventListener("submit", function (event) {
@@ -83,17 +115,16 @@ document.addEventListener("DOMContentLoaded", function () {
             const title = document.getElementById("title").value;
             const description = document.getElementById("description").value;
 
+            // Poll type
+            const pollType = document.getElementById("pollType").value;
+
+            // Domain field (conditionally included)
+            const allowedDomain = pollType === "domain_specific" ? document.getElementById("allowedDomain").value : "";
+
             // Collecting candidate information
             const candidates = [];
-            const candidateNames = document.querySelectorAll(
-                'input[name="candidateName[]"]'
-            );
-            const candidateAges = document.querySelectorAll(
-                'input[name="candidateAge[]"]'
-            );
-            const candidateDescriptions = document.querySelectorAll(
-                'textarea[name="candidateDescription[]"]'
-            );
+            const candidateNames = document.querySelectorAll('input[name="candidateName[]"]');
+            const candidateDescriptions = document.querySelectorAll('textarea[name="candidateDescription[]"]');
 
             for (let i = 0; i < candidateNames.length; i++) {
                 candidates.push({
@@ -107,7 +138,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "http://localhost:8080/api/polls/create?title=" +
                 encodeURIComponent(title) +
                 "&description=" +
-                encodeURIComponent(description),
+                encodeURIComponent(description) +
+                "&pollType=" + 
+                encodeURIComponent(pollType) +
+                "&allowedDomain=" + 
+                encodeURIComponent(allowedDomain),
                 {
                     credentials: "include",
                     method: "POST", // Use POST method
@@ -119,12 +154,12 @@ document.addEventListener("DOMContentLoaded", function () {
             )
                 .then((response) => response.json()) // Parse the response as JSON
                 .then((data) => {
-                      const id = data.id
-                      const URL = `127.0.0.1:3000/pages/poll.html?id=${id}`
+                    const id = data.id;
+                    const URL = `127.0.0.1:3000/pages/poll.html?id=${id}`;
                     console.log("Poll created successfully:", data);
                     showPopup(`Poll created successfully! But it is currently on pending to be approved by an Admin!
 
-                      Your Poll Share Link`, URL );
+                      Your Poll Share Link`, URL);
                     // Optionally, reset the form or redirect after success
                     document.getElementById("pollForm").reset();
                 })
@@ -133,38 +168,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     showPopup("Error: " + error.message, "error");
                 });
         });
-
-    // Function to show popup notifications
-    function showPopup(message, url) {
-      const popupModal = document.getElementById("popupModal");
-      const popupMessage = document.getElementById("popupMessage");
-      const popupURL = document.getElementById("popupURL");
-    
-      // Set the message and URL
-      popupMessage.innerText = message;
-      popupURL.value = url;
-    
-      // Show the modal
-      popupModal.style.display = "flex";
-    }
-    
-    
-    
-  
-  // Close the popup modal
-  function closePopup() {
-      const popupModal = document.getElementById("popupModal");
-      popupModal.style.display = "none"; // Hide the modal
-  
-      // Remove any success or error classes
-      const popupContent = document.querySelector(".popup-content");
-      popupContent.classList.remove("success", "error");
-  }
-  
-  // Add event listener to close the popup when the 'x' button is clicked
-  document.querySelector(".popup-close").addEventListener("click", closePopup);
-  
 }
+
 
 
   function setupIndex() {

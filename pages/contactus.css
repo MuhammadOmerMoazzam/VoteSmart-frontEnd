@@ -16,7 +16,6 @@
     margin-left: 0px;
     line-height: 25px;
   }
-  /* #4d7ae3 */
 
   .contact_us_2 .responsive-cell-block {
     min-height: 75px;
@@ -262,12 +261,13 @@
     padding-right: 0px;
     padding-bottom: 0px;
     padding-left: 10px;
-    font-size: 14px;
+    font-size: 1.2em;
+    font-weight: 700;
     margin-top: 0px;
     margin-right: 0px;
     margin-bottom: 5px;
     margin-left: 0px;
-    color: #9c9c9c;
+    color: #000;
   }
   
   .contact_us_2 ::placeholder {
@@ -524,9 +524,4 @@
     
     .navbuts:hover::before {
     transform: translateX(100%) rotate(30deg); /* Moves the shine across the button */
-    }
-  
-  
-  
-  
-    
+    }   

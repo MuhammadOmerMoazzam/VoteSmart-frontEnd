@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoteSmart | E-Polling Platform</title>
+  <link rel="icon" href="/icon.ico" type="image/x-icon">
+  <style>
+    :root {
+      --purple-text: #542676;
+      --purple-text-dark: #431d5d;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    .container {
+      margin: 1em auto;
+      width: fit-content;
+      background-color: rgba(172, 255, 47, 0.7);
+      justify-items: center;
+      padding: .5em 1em;
+      border-radius: 3em;
+      z-index: 10;
+    }
+
+    .department {
+      color: #1c1a1a;
+      text-transform: capitalize;
+      font-size: 3em;
+      font-weight: bold;
+      margin: .3em .5em;
+      text-align: center;
+      width: 15em;
+    }
+
+    .department span {
+      color: var(--purple-text-dark);
+    }
+
+    #votesmart-logo {
+      background-color: #d9e6f2;
+      border-radius: 50%;
+      width: 11.5em;
+      height: 11.5em;
+      outline: 3px solid black;
+      margin-top: 1em;
+    }
+
+    .text-large {
+      color: var(--purple-text);
+      font-size: 3em;
+      font-weight: bold;
+      padding-top: .8em;
+    }
+
+    .text-small {
+      color: var(--purple-text);
+      font-size: 2em;
+      font-weight: bold;
+      padding-left: 3px;
+    }
+
+    .text {
+      margin: 1em 0;
+      padding: 0;
+    }
+
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      width: 40em;
+      margin-bottom: .5em;
+    }
+
+    .verticle-seperator {
+      padding: 1.5em;
+    }
+
+    .green-line {
+      margin-top: 1.2em;
+      width: 5px;
+      height: 3.7em;
+      background-color: #37a140;
+    }
+
+    .purple-line {
+      width: 5px;
+      height: 3.7em;
+      background-color: #7232a3;
+    }
+
+    .bg-top {
+      position: fixed;
+      z-index: -1;
+      width: 100%;
+      height: 100vh;
+      top: 0;
+    }
+
+    #ssuet-bg-img {
+      height: 100vh;
+      width: 100%;
+    }
+
+    .button {
+      display: block;
+      padding: 1em;
+      text-decoration: none;
+      margin-top: 1.5em;
+      margin-bottom: .5em;
+      color: white;
+      font-weight: bold; 
+      background-color: var(--purple-text-dark);
+      font-size: 1.5em;
+      border: none;
+      border-radius: 2em;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+
+    .button:hover {
+      background-color: #fff;
+      color: var(--purple-text-dark);
+      transform: scale(1.05);
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .top {
+      display: flex;
+      width: 75em;
+      justify-content: space-between;
+    }
+
+    #ssuet-logo,
+    #sed-department-logo {
+      height: 12em;
+      width: 12.5em;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="bg-top">
+    <img id="ssuet-bg-img" src="/images/ssuet-bg-img.jpg" alt="Sir Syed University Building Image" />
+  </div>
+  <div class="container center">
+    <div class="top">
+      <div class="logo">
+        <img id="ssuet-logo" src="/images/ssuet-logo.png" alt="Sir Syed University Logo" />
+      </div>
+      <div class="verticle-seperator">
+        <div class="green-line"></div>
+        <div class="purple-line"></div>
+      </div>
+      <div class="text">
+        <div class="text-large">Sir Syed University</div>
+        <div class="text-small">of Engineering and Technology</div>
+      </div>
+      <div class="verticle-seperator">
+        <div class="green-line"></div>
+        <div class="purple-line"></div>
+      </div>
+      <div class="logo logo-div">
+        <img id="sed-department-logo" src="/images/sed-department-logo.png" alt="Software Engineering Department Logo" />
+      </div>
+    </div>
+    <div class="department">software engineering department <span>presents</span></div>
+    <div class="department">data structures and algorithm  <span>project</span></div>
+    <div class="bottom">
+      <div class="text">
+        <div class="text-large" style="color: var(--purple-text-dark);">VoteSmart</div>
+        <div class="text-small" style="color: var(--purple-text-dark);">E-Polling Platform</div>
+      </div>
+      <div class="verticle-seperator">
+        <div class="green-line"></div>
+        <div class="purple-line"></div>
+      </div>
+      <div class="logo">
+        <img id="votesmart-logo" src="/images/VoteSmart-logo.png" alt="VoteSmart Website Logo" />
+      </div>
+    </div>
+    <!-- button to visit home page -->
+    <a class="button" href="/index.html">Open Application</a>
+  </div>
+</body>
+
+</html>

@@ -1,522 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Poll Results</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* General Body and Container Styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2196f3;
-            margin: 0;
-            padding: 0;
-        }
+      /* General Body and Container Styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #2196f3;
+        margin: 0;
+        padding: 0;
+      }
 
-        .container {
-            max-width: 800px;
-            margin: 100px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+      .container {
+        max-width: 800px;
+        margin: 100px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
 
-        /* Poll Details (Title and Description) */
-        .poll-details {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+      /* Poll Details (Title and Description) */
+      .poll-details {
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-        #poll-title {
-            font-size: 1.8rem;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+      #poll-title {
+        font-size: 1.8rem;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
 
-        #poll-description {
-            font-size: 1.1rem;
-            color: #666;
-        }
+      #poll-description {
+        font-size: 1.1rem;
+        color: #666;
+      }
 
-        /* Candidate Results */
-        #results-container {
-            margin-top: 30px;
-        }
+      /* Candidate Results */
+      #results-container {
+        margin-top: 30px;
+      }
 
-        #candidate-list {
-            display: flex;
-            flex-direction: column;
-        }
+      #candidate-list {
+        display: flex;
+        flex-direction: column;
+      }
 
-        .candidate-result {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+      .candidate-result {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        .candidate-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
+      .candidate-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
 
-        .candidate-name {
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
+      .candidate-name {
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
 
-        .candidate-description {
-            font-size: 1rem;
-            color: #666;
-        }
+      .candidate-description {
+        font-size: 1rem;
+        color: #666;
+      }
 
-        .candidate-age {
-            font-size: 1rem;
-            color: #888;
-        }
+      .candidate-age {
+        font-size: 1rem;
+        color: #888;
+      }
 
-        .progress-bar-container {
-            width: 100%;
-            background-color: #eee;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
+      .progress-bar-container {
+        width: 100%;
+        background-color: #eee;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 10px;
+      }
 
-        .progress-bar {
-            height: 10px;
-            border-radius: 20px;
-            background-color: #4caf50; /* Green color for the progress bar */
-            transition: width 0.5s ease-in-out;
-        }
+      .progress-bar {
+        height: 10px;
+        border-radius: 20px;
+        background-color: #4caf50; /* Green color for the progress bar */
+        transition: width 0.5s ease-in-out;
+      }
 
-        /* Winner Animation */
-        .winner {
-            color: rgb(0, 0, 0);
-            font-weight: bold;
-            animation: pulse 1s infinite;
-            text-align: center;
-            font-size: larger;
-        }
+      /* Button to go back to Poll page */
+      #back-button {
+        display: block;
+        width: 100%;
+        padding: 10px 20px;
+        margin-top: 30px;
+        background-color: #2196f3;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
+      #back-button:hover {
+        background-color: #0b7dda;
+      }
 
-        /* Button to go back to Poll page */
-        #back-button {
-            display: block;
-            width: 100%;
-            padding: 10px 20px;
-            margin-top: 30px;
-            background-color: #2196f3;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+      /* Navbar container styling */
+      header nav {
+        z-index: 990;
+        background-color: #fff;
+        border-bottom: 1px solid #d1d1d1;
+        justify-content: space-around;
+        align-items: center;
+        max-width: none;
+        height: 72px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 7.5rem;
+        padding-right: 7.5rem;
+        display: flex;
+        position: fixed;
+        inset: 0% 0% auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-        #back-button:hover {
-            background-color: #0b7dda;
-        }
+      .underlinedText {
+        text-decoration: underline;
+      }
 
-        /* Chart Styles */
-        #chart-container {
-            margin-top: 60px;
-        }
+      /* Logo styling */
+      .left img {
+        cursor: pointer;
+        height: 60px;
+      }
+      /* Centered navbar links with space between items */
+      .center ul {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 30px; /* Space between links */
+      }
 
-        /* Navbar container styling */
-        header nav {
-            z-index: 990;
-            background-color: #fff;
-            border-bottom: 1px solid #d1d1d1;
-            justify-content: space-around;
-            align-items: center;
-            max-width: none;
-            height: 72px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 7.5rem;
-            padding-right: 7.5rem;
-            display: flex;
-            position: fixed;
-            inset: 0% 0% auto;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            .underlinedText {
-                text-decoration: underline;
-            }
-        }
+      /* Styling for each navbar item */
+      .center ul li {
+        display: inline-block;
+      }
 
-        /* Logo styling */
-        .left img {
-            cursor: pointer;
-            height: 60px;
-        }
-        /* Centered navbar links with space between items */
-        .center ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            gap: 30px; /* Space between links */
-        }
+      /* Link styling within the nav items */
+      .center ul li a {
+        text-decoration: none;
+        color: #1d2e56; /* Text color */
+        font-size: 16px;
+        padding: 8px 12px;
+        transition: color 0.3s ease; /* Smooth color transition */
+        font-weight: bold; /* Make text slightly bold for visibility */
+        position: relative; /* Positioning for pseudo-element */
+      }
 
-        /* Styling for each navbar item */
-        .center ul li {
-            display: inline-block;
-        }
+      /* Underline effect using a pseudo-element */
+      .center ul li a::after {
+        content: ""; /* Pseudo-element for underline */
+        position: absolute; /* Positioning relative to the link */
+        left: 50%; /* Start in the middle */
+        bottom: -4px; /* Position just below the text */
+        width: 0; /* Initial width */
+        height: 2px; /* Height of the underline */
+        background: #243f76; /* Color of the underline */
+        transition: width 0.4s ease, left 0.4s ease; /* Smooth transition for width and position */
+      }
 
-        /* Link styling within the nav items */
-        .center ul li a {
-            text-decoration: none;
-            color: #1d2e56; /* Text color */
-            font-size: 16px;
-            padding: 8px 12px;
-            transition: color 0.3s ease; /* Smooth color transition */
-            font-weight: bold; /* Make text slightly bold for visibility */
-            position: relative; /* Positioning for pseudo-element */
-        }
+      /* Link hover effect with underline animation */
+      .center ul li a:hover {
+        color: #243f76; /* Change text color on hover */
+      }
 
-        /* Underline effect using a pseudo-element */
-        .center ul li a::after {
-            content: ""; /* Pseudo-element for underline */
-            position: absolute; /* Positioning relative to the link */
-            left: 50%; /* Start in the middle */
-            bottom: -4px; /* Position just below the text */
-            width: 0; /* Initial width */
-            height: 2px; /* Height of the underline */
-            background: #243f76; /* Color of the underline */
-            transition: width 0.4s ease, left 0.4s ease; /* Smooth transition for width and position */
-        }
+      /* Hover effect for the underline */
+      .center ul li a:hover::after {
+        width: 100%; /* Full width on hover */
+        left: 0; /* Position to the left */
+      }
 
-        /* Link hover effect with underline animation */
-        .center ul li a:hover {
-            color: #243f76; /* Change text color on hover */
-        }
+      /* Right section button styling */
+      .right .navbuts {
+        background-color: #1d2e56; /* Button background color */
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        margin-left: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
 
-        /* Hover effect for the underline */
-        .center ul li a:hover::after {
-            width: 100%; /* Full width on hover */
-            left: 0; /* Position to the left */
-        }
+      /* Button hover effect with animation */
+      .right .navbuts:hover {
+        background-color: #243f76; /* Slightly lighter shade on hover */
+        transform: scale(1.05); /* Slight zoom on hover */
+      }
+      .navbuts {
+        position: relative; /* Positioning for pseudo-element */
+        overflow: hidden; /* Prevent overflow of the shine effect */
+        border: none; /* Remove default border */
+        border-radius: 4px; /* Rounded corners */
+        padding: 10px 20px; /* Padding for button */
+        font-size: 16px; /* Font size */
+        color: white; /* Text color */
+        background-color: #007bff; /* Background color */
+        cursor: pointer;
+        height: 45px;
+      }
 
-        /* Right section button styling */
-        .right .navbuts {
-            background-color: #1d2e56; /* Button background color */
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            margin-left: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
+      /* Shine effect */
+      .navbuts::before {
+        content: ""; /* Pseudo-element for shine effect */
+        position: absolute; /* Positioning relative to the button */
+        top: -20%; /* Start above the button */
+        left: -20%; /* Start from the left side */
+        width: 140%; /* Extend to cover the button */
+        height: 140%; /* Extend to cover the button */
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.3) 0%,
+          rgba(255, 255, 255, 0) 100%
+        ); /* Shine gradient */
+        transform: translateX(-100%) rotate(30deg); /* Initial position and rotation */
+        transition: transform 0.5s ease; /* Smooth transition for shine */
+        pointer-events: none; /* Prevents interaction with the shine effect */
+      }
 
-        /* Button hover effect with animation */
-        .right .navbuts:hover {
-            background-color: #243f76; /* Slightly lighter shade on hover */
-            transform: scale(1.05); /* Slight zoom on hover */
-        }
-        .navbuts {
-            position: relative; /* Positioning for pseudo-element */
-            overflow: hidden; /* Prevent overflow of the shine effect */
-            border: none; /* Remove default border */
-            border-radius: 4px; /* Rounded corners */
-            padding: 10px 20px; /* Padding for button */
-            font-size: 16px; /* Font size */
-            color: white; /* Text color */
-            background-color: #007bff; /* Background color */
-            cursor: pointer;
-            height: 45px;
-        }
+      .navbuts:hover::before {
+        transform: translateX(100%) rotate(30deg); /* Moves the shine across the button */
+      }
 
-        /* Shine effect */
-        .navbuts::before {
-            content: ""; /* Pseudo-element for shine effect */
-            position: absolute; /* Positioning relative to the button */
-            top: -20%; /* Start above the button */
-            left: -20%; /* Start from the left side */
-            width: 140%; /* Extend to cover the button */
-            height: 140%; /* Extend to cover the button */
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0.3) 0%,
-                rgba(255, 255, 255, 0) 100%
-            ); /* Shine gradient */
-            transform: translateX(-100%) rotate(30deg); /* Initial position and rotation */
-            transition: transform 0.5s ease; /* Smooth transition for shine */
-            pointer-events: none; /* Prevents interaction with the shine effect */
-        }
+      .profile-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #ddd;
+      }
 
-        .navbuts:hover::before {
-            transform: translateX(100%) rotate(30deg); /* Moves the shine across the button */
-        }
-
-        .profile-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid #ddd;
-        }
-
-        .hidden {
-            display: none;
-        }
+      .hidden {
+        display: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <nav>
-            <div class="left">
-                <img
-                    onclick="location .href='/index.html'"
-                    src="/images/VoteSmart-logo.png"
-                    alt="VoteSmart-logo"
-                />
-            </div>
-            <div class="center">
-                <ul>
-                    <li><a href="pages/createpoll.html">Services</a></li>
-                    <li><a href="pages/aboutus.html">About Us</a></li>
-                    <li><a href="pages/contactus.html">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="right">
-                <div id="auth-buttons">
-                    <button
-                        onclick="location.href='/pages/loginandsignup.html?form=signup'"
-                        class="navbuts"
-                        id="signupBtn"
-                    >
-                        Sign Up
-                    </button>
-                    <button
-                        onclick="location.href='/pages/loginandsignup.html?form=signin'"
-                        class="navbuts"
-                        id="signinBtn"
-                    >
-                        Sign In
-                    </button>
-                </div>
-                <div id="profileIcon" class="hidden">
-                    <img
-                        src="/images/profile.png"
-                        alt="Profile"
-                        class="profile-circle"
-                        onclick="redirectToProfile()"
-                    />
-                </div>
-            </div>
-        </nav>
+      <nav>
+        <div class="left">
+          <img
+            onclick="location.href='/index.html'"
+            src="/images/VoteSmart-logo.png"
+            alt="VoteSmart-logo"
+          />
+        </div>
+        <div class="center">
+          <ul>
+            <li><a href="pages/createpoll.html">Services</a></li>
+            <li><a href="pages/aboutus.html">About Us</a></li>
+            <li><a href="pages/contactus.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="right">
+          <div id="auth-buttons">
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signup'"
+              class="navbuts"
+              id="signupBtn"
+            >
+              Sign Up
+            </button>
+            <button
+              onclick="location.href='/pages/loginandsignup.html?form=signin'"
+              class="navbuts"
+              id="signinBtn"
+            >
+              Sign In
+            </button>
+          </div>
+          <div id="profileIcon" class="hidden">
+            <img
+              src="/images/profile.png"
+              alt="Profile"
+              class="profile-circle"
+              onclick="redirectToProfile()"
+            />
+          </div>
+        </div>
+      </nav>
     </header>
     <div class="container">
-        <!-- Poll Title and Description -->
-        <div class="poll-details">
-            <h1>Results</h1>
-        </div>
+      <!-- Poll Title and Description -->
+      <div class="poll-details">
+        <h1>Results</h1>
+      </div>
 
-        <!-- Candidate Results -->
-        <div id="results-container">
-            <h2 id="poll-title">Results</h2>
-            <div id="candidate-list">
-                <!-- Dynamic candidate result cards will be inserted here -->
-            </div>
+      <!-- Candidate Results -->
+      <div id="results-container">
+        <h2 id="poll-title">Results</h2>
+        <div id="candidate-list">
+          <!-- Dynamic candidate result cards will be inserted here -->
         </div>
+      </div>
 
-        
-        <!-- Chart Container -->
-        <div id="chart-container">
-          <div style="text-align: center; font-size: x-large; margin-bottom: 20px;"><b>Poll Result Graph</b></div>
-            <canvas id="resultsChart"></canvas>
-        </div>
-
-        <button id="back-button" onclick="window.history.back()">
-            Back to Poll
-        </button>
+      <button id="back-button" onclick="window.history.back()">
+        Back to Poll
+      </button>
     </div>
     <script>
-        function redirectToProfile() {
-            window.location.href = "/profile.html";
-        }
-        function checkAuthStatus() {
-            return fetch("http://localhost:8080/api/auth/status", {
-                credentials: "include", // Ensure cookies (session) are included
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    const authButtons = document.getElementById("auth-buttons");
-                    const profileIcon = document.getElementById("profileIcon");
+      function redirectToProfile() {
+        window.location.href = "/profile.html";
+      }
+      function checkAuthStatus() {
+        return fetch("http://localhost:8080/api/auth/status", {
+          credentials: "include", // Ensure cookies (session) are included
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const authButtons = document.getElementById("auth-buttons");
+            const profileIcon = document.getElementById("profileIcon");
 
-                    // Store the userId globally if authenticated
-                    userId = data.userId;
+            // Store the userId globally if authenticated
+            userId = data.userId;
 
-                    if (data.authenticated) {
-                        // User is logged in
-                        authButtons.style.display = "none";
-                        profileIcon.style.display = "block";
-                    } else {
-                        // User is not logged in
-                        authButtons.style.display = "block";
-                        profileIcon.style.display = "none";
+            if (data.authenticated) {
+              // User is logged in
+              authButtons.style.display = "none";
+              profileIcon.style.display = "block";
+            } else {
+              // User is not logged in
+              authButtons.style.display = "block";
+              profileIcon.style.display = "none";
 
-                        // Redirect to login page if not authenticated
-                        window.location.href = "/pages/loginandsignup.html?form=signin";
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error checking authentication status:", error);
-                    // Redirect to login page if auth check fails
-                    window.location.href = "/pages/loginandsignup.html?form=signin";
-                });
-        }
+              // Redirect to login page if not authenticated
+              window.location.href = "/pages/loginandsignup.html?form=signin";
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking authentication status:", error);
+            // Redirect to login page if auth check fails
+            window.location.href = "/pages/loginandsignup.html?form=signin";
+          });
+      }
 
-        // Call checkAuthStatus before fetching poll details
-        window.onload = () => {
-            checkAuthStatus();
-        };
-        function getPollIdFromURL() {
-            const urlParams = new URLSearchParams(window.location.search); // Get query parameters from the URL
-            return urlParams.get("id"); // Return the value of 'pollId'
-        }
+      // Call checkAuthStatus before fetching poll details
+      window.onload = () => {
+        checkAuthStatus();
+      };
+      function getPollIdFromURL() {
+        const urlParams = new URLSearchParams(window.location.search); // Get query parameters from the URL
+        return urlParams.get("id"); // Return the value of 'pollId'
+      }
 
-        function fetchPollResults(pollId) {
-            fetch(`http://localhost:8080/api/polls/${pollId}`, {
-                credentials: "include", // Ensure session cookie is included
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    const pollTitle = document.getElementById("poll-title");
-                    const candidateList = document.getElementById("candidate-list");
+      function fetchPollResults(pollId) {
+        fetch(`http://localhost:8080/api/polls/${pollId}`, {
+          credentials: "include", // Ensure session cookie is included
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const pollTitle = document.getElementById("poll-title");
 
-                    // Display Poll Title
-                    pollTitle.textContent = `Poll: ${data.title}`;
+            const candidateList = document.getElementById("candidate-list");
 
-                    // Calculate total votes
-                    const totalVotes = data.candidates.reduce(
-                        (total, candidate) => total + candidate.voteCount,
-                        0
-                    );
+            // Display Poll Title and Description
+            pollTitle.textContent = `Poll: ${data.title}`;
 
-                    let winner = null;
+            // Calculate total votes
+            const totalVotes = data.candidates.reduce(
+              (total, candidate) => total + candidate.voteCount,
+              0
+            );
 
-                    // Display Candidate Results
-                    data.candidates.forEach((candidate) => {
-                        const candidateCard = document.createElement("div");
-                        candidateCard.classList.add("candidate-result");
+            // Display Candidate Results
+            data.candidates.forEach((candidate) => {
+              const candidateCard = document.createElement("div");
+              candidateCard.classList.add("candidate-result");
 
-                        const candidateInfo = document.createElement("div");
-                        candidateInfo.classList.add("candidate-info");
+              const candidateInfo = document.createElement("div");
+              candidateInfo.classList.add("candidate-info");
 
-                        const candidateName = document.createElement("div");
-                        candidateName.classList.add("candidate-name");
-                        candidateName.textContent = candidate.name;
+              const candidateName = document.createElement("div");
+              candidateName.classList.add("candidate-name");
+              candidateName.textContent = candidate.name;
 
-                        const candidateAge 
-                        = document.createElement("div");
-                        candidateAge.classList.add("candidate-age");
-                        candidateAge.textContent = `VoteCount: ${candidate.voteCount}`;
+              const candidateAge = document.createElement("div");
+              candidateAge.classList.add("candidate-age");
+              candidateAge.textContent = `VoteCount: ${candidate.voteCount}`;
 
-                        const candidateDescription = document.createElement("div");
-                        candidateDescription.classList.add("candidate-description");
-                        candidateDescription.textContent = candidate.description;
+              const candidateDescription = document.createElement("div");
+              candidateDescription.classList.add("candidate-description");
+              candidateDescription.textContent = candidate.description;
 
-                        candidateInfo.appendChild(candidateName);
-                        candidateInfo.appendChild(candidateAge);
-                        candidateCard.appendChild(candidateInfo);
-                        candidateCard.appendChild(candidateDescription);
+              candidateInfo.appendChild(candidateName);
+              candidateInfo.appendChild(candidateAge);
+              candidateCard.appendChild(candidateInfo);
+              candidateCard.appendChild(candidateDescription);
 
-                        // Create progress bar to show vote count percentage
-                        const progressBarContainer = document.createElement("div");
-                        progressBarContainer.classList.add("progress-bar-container");
+              // Create progress bar to show vote count percentage
+              const progressBarContainer = document.createElement("div");
+              progressBarContainer.classList.add("progress-bar-container");
 
-                        const progressBar = document.createElement("div");
-                        progressBar.classList.add("progress-bar");
+              const progressBar = document.createElement("div");
+              progressBar.classList.add("progress-bar");
 
-                        // Set the width of the progress bar based on vote percentage
-                        const votePercentage =
-                            totalVotes > 0 ? (candidate.voteCount / totalVotes) * 100 : 0;
-                        progressBar.style.width = `${votePercentage}%`;
+              // Set the width of the progress bar based on vote percentage
+              const votePercentage =
+                totalVotes > 0 ? (candidate.voteCount / totalVotes) * 100 : 0;
+              progressBar.style.width = `${votePercentage}%`;
 
-                        progressBarContainer.appendChild(progressBar);
-                        candidateCard.appendChild(progressBarContainer);
+              progressBarContainer.appendChild(progressBar);
+              candidateCard.appendChild(progressBarContainer);
 
-                        // Check for the winner
-                        if (!winner || candidate.voteCount > winner.voteCount) {
-                            winner = candidate;
-                        }
+              // Add candidate card to the results list
+              candidateList.appendChild(candidateCard);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching poll results:", error);
+          });
+      }
 
-                        // Add candidate card to the results list
-                        candidateList.appendChild(candidateCard);
-                    });
+      // Get the pollId from the query parameter
+      const pollId = getPollIdFromURL();
 
-                    // Display winner
-                    if (winner) {
-                        const winnerText = document.createElement("div");
-                        winnerText.classList.add("winner");
-                        winnerText.textContent = `Winner: ${winner.name} with ${winner.voteCount} votes!`;
-                        candidateList.appendChild(winnerText);
-                    }
-
-                    // Prepare data for the chart
-                    const labels = data.candidates.map(candidate => candidate.name);
-                    const votes = data.candidates.map(candidate => candidate.voteCount);
-
-                    // Create the chart
-                    const ctx = document.getElementById('resultsChart').getContext('2d');
-                    const resultsChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Vote Count',
-                                data: votes,
-                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error fetching poll results:", error);
-                });
-        }
-
-        // Get the pollId from the query parameter
-        const pollId = getPollIdFromURL();
-
-        // Ensure pollId exists before calling the function
-        if (pollId) {
-            fetchPollResults(pollId);
-        } else {
-            console.error("Poll ID is missing from the query parameters.");
-        }
+      // Ensure pollId exists before calling the function
+      if (pollId) {
+        fetchPollResults(pollId);
+      } else {
+        console.error("Poll ID is missing from the query parameters.");
+      }
     </script>
-</body>
+  </body>
 </html>

@@ -14,9 +14,9 @@
       <div class="form signup">
         <header>Sign Up</header>
         <form id="signupForm">
-          <input type="text" id="name" placeholder="Full name" required />
-          <input type="email" id="email" placeholder="Email address" required />
-          <input type="password" id="password" placeholder="Password" required />
+          <input type="text" id="name" placeholder="Full name" required autocomplete="on"/>
+          <input type="email" id="email" placeholder="Email address" required autocomplete="on"/>
+          <input type="password" id="password" placeholder="Password" required autocomplete="on"/>
           <div class="checkbox">
             <input type="checkbox" id="signupCheck" />
             <label for="signupCheck">I accept all terms & conditions</label>
@@ -29,8 +29,8 @@
       <div class="form login">
         <header>Sign In</header>
         <form id="loginForm">
-          <input type="email" id="loginEmail" placeholder="Email address" required />
-          <input type="password" id="loginPassword" placeholder="Password" required />
+          <input type="email" id="loginEmail" placeholder="Email address" required autocomplete="on"/>
+          <input type="password" id="loginPassword" placeholder="Password" required autocomplete="on"/>
           <a href="#">Forgot password?</a>
           <input type="submit" value="Login" />
           <div id="loginMessage"></div>
